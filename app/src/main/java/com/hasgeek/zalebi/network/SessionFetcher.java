@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by heisenberg on 29/05/15.
@@ -39,24 +40,21 @@ public class SessionFetcher {
     }
 
     public void fetch(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://rootconf.talkfunnel.com/2015/json", new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://metarefresh.talkfunnel.com/2015/json", new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray schedules = response.getJSONArray("schedule");
                     ArrayList<Session> sessionList = new ArrayList<>();
-
+                    Gson gson = new Gson();
+                    JSONArray schedules = response.getJSONArray("schedule");
                     for(int i=0; i<schedules.length(); i++){
                         JSONObject schedule = (JSONObject) schedules.get(i);
                         JSONArray slots = schedule.getJSONArray("slots");
+                        //sessionList.addAll(Arrays.asList(gson.fromJson(slots.getJSONArray("sessions").toString(), Session[].class)));
                         for(int j = 0; j<slots.length(); j++){
                             JSONObject slot = (JSONObject) slots.get(j);
-                            JSONArray sessions = slot.getJSONArray("sessions");
-
-                            for (int k=0; k<sessions.length(); k++){
-                                JSONObject session = (JSONObject) sessions.get(k);
-                                sessionList.add(constructSession(session));
-                            }
+                            sessionList.addAll(Arrays.asList(gson.fromJson(slot.getString("sessions"), Session[].class)));
+                            Log.d("talkfunnel","added sessions for slot "+slot.getString("slot"));
                         }
                     }
                     mSessionFetchListener.onSessionFetchSuccess(sessionList);
