@@ -1,46 +1,61 @@
 package com.hasgeek.zalebi.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.model.Session;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by heisenberg on 29/05/15.
+ * Created by heisenberg on 05/06/15.
  */
-public class SessionListAdapter extends ArrayAdapter<Session> {
+public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.SessionsViewHolder>{
+    private List<Session> mSessions;
 
-    LayoutInflater mLayoutInflater;
-    int mResource;
-    Context mContext;
-    ArrayList<Session> mSessions;
+    public SessionListAdapter(List<Session> sessions) {
+        mSessions = sessions;
+    }
 
-    public SessionListAdapter(Context context, int resource, ArrayList<Session> sessions) {
-        super(context, resource, sessions);
-        mResource = resource;
-        mContext = context;
-        mSessions =sessions;
-        mLayoutInflater = LayoutInflater.from(context);
+    public static class SessionsViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
+        protected TextView mSessionTitle;
+        protected TextView mSpeakerName;
+
+        public SessionsViewHolder(View view) {
+            super(view);
+            view.setOnClickListener(this);
+            mSessionTitle = (TextView) view.findViewById(R.id.session_title);
+            mSpeakerName = (TextView) view.findViewById(R.id.speaker_name);
+        }
+
+        @Override
+        public void onClick(View v) {
+            TextView sessionTitle = (TextView) v.findViewById(R.id.session_title);
+            Log.e("funnel", "click..." + sessionTitle.getText());
+        }
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = mLayoutInflater.inflate(mResource, parent, false);
-
-        Session session = mSessions.get(position);
-
-        TextView sessionTitle = (TextView) convertView.findViewById(R.id.session_title);
-        TextView speakerName = (TextView) convertView.findViewById(R.id.speaker_name);
-
-        sessionTitle.setText(session.getTitle());
-        speakerName.setText(session.getSpeaker());
-        return convertView;
+    public SessionsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.session_list_item, parent, false);
+        return new SessionsViewHolder(view);
     }
+
+    @Override
+    public void onBindViewHolder(SessionsViewHolder holder, int position) {
+        Session session = mSessions.get(position);
+        holder.mSessionTitle.setText(session.getTitle());
+        holder.mSpeakerName.setText(session.getSpeaker());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mSessions.size();
+    }
+
 }
