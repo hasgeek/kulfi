@@ -20,9 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by heisenberg on 29/05/15.
- */
+
 public class SessionFetcher {
     Context context;
     RequestQueue requestQueue;
