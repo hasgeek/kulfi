@@ -2,7 +2,7 @@ package com.hasgeek.zalebi.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,13 +34,11 @@ public class SessionFragment extends Fragment implements SessionFetcher.SessionF
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_session, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.session_list);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        return view;
+        mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_session, container, false);
+        //mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        return mRecyclerView;
     }
-
 
     @Override
     public void onAttach(Activity activity) {

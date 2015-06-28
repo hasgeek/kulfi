@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.model.Session;
+import com.hasgeek.zalebi.util.TimeUtils;
 
 import java.util.List;
 
@@ -25,12 +26,16 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
     public static class SessionsViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
         protected TextView mSessionTitle;
         protected TextView mSpeakerName;
+        protected TextView mStartTime;
+        protected TextView mDuration;
 
         public SessionsViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             mSessionTitle = (TextView) view.findViewById(R.id.session_title);
             mSpeakerName = (TextView) view.findViewById(R.id.speaker_name);
+            mStartTime = (TextView) view.findViewById(R.id.start_time);
+            mDuration = (TextView) view.findViewById(R.id.session_duration);
         }
 
         @Override
@@ -51,6 +56,8 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         Session session = mSessions.get(position);
         holder.mSessionTitle.setText(session.getTitle());
         holder.mSpeakerName.setText(session.getSpeaker());
+        holder.mStartTime.setText(TimeUtils.displayableTime(session.getStart()));
+        holder.mDuration.setText(TimeUtils.getDuration(session.getStart(), session.getEnd()));
     }
 
     @Override

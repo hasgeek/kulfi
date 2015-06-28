@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="grey_700">#616161</color>
+    <color name="orange">#FD9727</color>
+    <color name="tab_normal">#74460C</color>
+    <color name="tab_selected">@android:color/white</color>
+    <color name="start_time">@android:color/black</color>
+    <color name="duration">@android:color/black</color>
+    <color name="title">#565759</color>
+    <color name="sub_title">#BBBBBB</color>
+    <color name="session_title">@color/title</color>
+    <color name="speaker">@color/sub_title</color>
 </resources>

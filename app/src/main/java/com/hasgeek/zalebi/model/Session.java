@@ -6,8 +6,8 @@ package com.hasgeek.zalebi.model;
 public class Session {
     String title;
     String description;
-    String startTime;
-    String endTime;
+    String start;
+    String end;
     String speaker;
 
     public String getTitle() {
@@ -26,20 +26,20 @@ public class Session {
         this.description = description;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getStart() {
+        return start;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getEnd() {
+        return end;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public String getSpeaker() {

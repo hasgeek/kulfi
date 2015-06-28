@@ -1,27 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin"
     android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/list_divider_width"
     android:background="@android:color/white"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:layout_height="match_parent">
+    android:padding="@dimen/activity_horizontal_margin">
 
     <TextView
-        android:id="@+id/session_title"
-        android:layout_width="match_parent"
+        android:id="@+id/start_time"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/title_size"
-        android:text="Session title"
-        />
+        android:layout_weight="2"
+        android:textColor="@color/start_time"
+        android:text="9:15AM" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:layout_toRightOf="@id/start_time"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/session_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/session_title"
+            android:text="Session title"
+            android:textSize="@dimen/title_size" />
+
+        <TextView
+            android:id="@+id/speaker_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speaker name"
+            android:textColor="@color/speaker"
+            android:textSize="@dimen/subtitle_size" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/speaker_name"
-        android:layout_width="match_parent"
+        android:id="@+id/session_duration"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/subhead_size"
-        android:text="Speaker name"
-        android:textColor="@color/grey_700"
-        />
-
+        android:layout_weight="2"
+        android:gravity="right"
+        android:text="45 min" />
 </LinearLayout>
