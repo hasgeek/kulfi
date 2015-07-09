@@ -17,6 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,6 +47,9 @@ public class SessionFetcher {
                 try {
                     ArrayList<Session> sessionList = new ArrayList<>();
                     Gson gson = new Gson();
+                    FileWriter fileWriter = new FileWriter(new File("/sdcard/appdata/sessions.json"));
+                    fileWriter.write(response.toString());
+                    fileWriter.close();
                     JSONArray schedules = response.getJSONArray("schedule");
                     for(int i=0; i<schedules.length(); i++){
                         JSONObject schedule = (JSONObject) schedules.get(i);
@@ -56,7 +62,7 @@ public class SessionFetcher {
                         }
                     }
                     mSessionFetchListener.onSessionFetchSuccess(sessionList);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -19,4 +19,11 @@
         </activity>
     </application>
 
+    <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+        android:contentAuthority=""
+        android:accountType=""
+        android:userVisible="false"
+        android:allowParallelSyncs="false"
+        android:isAlwaysSyncable="true"
+        android:supportsUploading="false"/>
 </manifest>
