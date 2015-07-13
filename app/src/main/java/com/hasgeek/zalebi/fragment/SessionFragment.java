@@ -35,7 +35,7 @@ public class SessionFragment extends Fragment implements SessionFetcher.SessionF
     public static final String ACCOUNT = "dummyaccount";
 
     // Sync interval constants
-    public static final long SYNC_INTERVAL = 300L;
+    public static final long SYNC_INTERVAL = 120L;
     private Account mAccount;
 
     public SessionFragment() {
@@ -56,18 +56,19 @@ public class SessionFragment extends Fragment implements SessionFetcher.SessionF
         mRecyclerView.setAdapter(new SessionListAdapter(mRecyclerView.getContext()));
         mAccount = createSyncAccount(mRecyclerView.getContext());
         ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL,true);
-        ContentResolver.requestSync(mAccount, AUTHORITY,settingsBundle );
+        ContentResolver.setIsSyncable(mAccount, AUTHORITY, 1);
 
         ContentResolver.addPeriodicSync(
                 mAccount,
                 AUTHORITY,
                 Bundle.EMPTY,
                 SYNC_INTERVAL);
-        Log.d("hasgeek","initiated periodic sync for SyncAdapter");
+        Log.d("hasgeek", "initiated periodic sync for SyncAdapter");
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(mAccount, AUTHORITY, bundle);
+        Log.d("hasgeek", "initiated requestSync for immeidate sync with SyncAdapter");
         return mRecyclerView;
     }
 
