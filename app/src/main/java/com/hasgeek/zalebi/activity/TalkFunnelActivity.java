@@ -1,5 +1,9 @@
 package com.hasgeek.zalebi.activity;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -24,6 +28,14 @@ import java.util.List;
 
 public class TalkFunnelActivity extends AppCompatActivity{
 
+    // The authority for the sync adapter's content provider
+    public static final String AUTHORITY = "com.hasgeek.zalebi.sync.provider";
+    // An account type, in the form of a domain name
+    public static final String ACCOUNT_TYPE = "hasgeek.com";
+    // The account name
+    public static final String ACCOUNT = "dummyaccount";
+    private Account mAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +57,11 @@ public class TalkFunnelActivity extends AppCompatActivity{
             setupViewPager(viewPager);
         }
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal),
+                getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(viewPager);
+        mAccount = createSyncAccount(this);
+
     }
 
     @Override
@@ -101,6 +116,21 @@ public class TalkFunnelActivity extends AppCompatActivity{
         public CharSequence getPageTitle(int position) {
             return mFragmentTitles.get(position);
         }
+    }
+
+    /** Create a new dummy account for the sync adapter
+    *
+            * @param context The application context
+    */
+    public static Account createSyncAccount(Context context) {
+        // Create the account type and default account
+        Account newAccount = new Account(
+                ACCOUNT, ACCOUNT_TYPE);
+        // Get an instance of the Android account manager
+        AccountManager accountManager =
+                (AccountManager) context.getSystemService(
+                        ACCOUNT_SERVICE);
+        return newAccount;
     }
 
 }

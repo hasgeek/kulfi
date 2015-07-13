@@ -1,5 +1,6 @@
 package com.hasgeek.zalebi.adapter;
 
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,18 +8,56 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.model.Session;
 import com.hasgeek.zalebi.util.TimeUtils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by heisenberg on 05/06/15.
- */
 public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.SessionsViewHolder>{
-    private List<Session> mSessions;
+    private List<Session> mSessions = new ArrayList<>();
 
+    public SessionListAdapter(){
+        Gson gson = new Gson();
+        try{
+            File sessionListJSONFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/hasgeek/sessions.json");
+            StringBuilder json = new StringBuilder("");
+            if(sessionListJSONFile.exists()){
+                Log.d("hasgeek","found file");
+                BufferedReader fileReader = new BufferedReader(new FileReader(sessionListJSONFile));
+                String line = "";
+                while ((line = fileReader.readLine()) != null){
+                    json.append(line);
+                }
+            }
+            JSONObject sessionsJSON = new JSONObject(json.toString());
+            JSONArray schedules = sessionsJSON.getJSONArray("schedule");
+            Log.d("hasgeek","number of schedules "+schedules.length());
+            for(int i=0; i<schedules.length(); i++){
+                JSONObject schedule = (JSONObject) schedules.get(i);
+                JSONArray slots = schedule.getJSONArray("slots");
+                for(int j = 0; j<slots.length(); j++){
+                    JSONObject slot = (JSONObject) slots.get(j);
+                    mSessions.addAll(Arrays.asList(gson.fromJson(slot.getString("sessions"), Session[].class)));
+                    Log.d("talkfunnel","added sessions for slot "+slot.getString("slot"));
+                }
+            }
+
+        }
+        catch (Exception ex){
+            Log.e("hasgeek","Exception while reading sessions "+ex.getMessage());
+        }
+
+    }
     public SessionListAdapter(List<Session> sessions) {
         mSessions = sessions;
     }

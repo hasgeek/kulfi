@@ -3,6 +3,7 @@ package com.hasgeek.zalebi.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.hasgeek.zalebi.adapter.SessionsListSyncAdapter;
 
@@ -16,6 +17,7 @@ public class SessionSyncService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d("hasgeek","inside SessionService");
         synchronized (sSyncAdapterLock) {
             if (syncAdapter == null)
                 syncAdapter = new SessionsListSyncAdapter(getApplicationContext(), true);

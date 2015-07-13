@@ -1,6 +1,10 @@
 package com.hasgeek.zalebi.fragment;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,13 +26,28 @@ public class SessionFragment extends Fragment implements SessionFetcher.SessionF
 
     RecyclerView mRecyclerView;
 
+    // The authority for the sync adapter's content provider
+    public static final String AUTHORITY = "com.hasgeek.zalebi.sync.provider";
+    // An account type, in the form of a domain name
+    public static final String ACCOUNT_TYPE = "hasgeek.com";
+    // The account name
+    public static final String ACCOUNT = "dummyaccount";
+
+    // Sync interval constants
+    public static final long SECONDS_PER_MINUTE = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 60L;
+    public static final long SYNC_INTERVAL =
+            SYNC_INTERVAL_IN_MINUTES *
+                    SECONDS_PER_MINUTE;
+    private Account mAccount;
+
     public SessionFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new SessionFetcher(getActivity().getApplicationContext(), this).fetch();
+//        new SessionFetcher(getActivity().getApplicationContext(), this).fetch();
     }
 
     @Override
@@ -37,6 +56,18 @@ public class SessionFragment extends Fragment implements SessionFetcher.SessionF
         mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_session, container, false);
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        mRecyclerView.setAdapter(new SessionListAdapter());
+        mAccount = createSyncAccount(mRecyclerView.getContext());
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(mAccount, AUTHORITY,settingsBundle );
+        ContentResolver.addPeriodicSync(
+                mAccount,
+                AUTHORITY,
+                Bundle.EMPTY,
+                SYNC_INTERVAL);
+        Log.d("hasgeek","initiated periodic sync for SyncAdapter");
         return mRecyclerView;
     }
 
@@ -60,4 +91,20 @@ public class SessionFragment extends Fragment implements SessionFetcher.SessionF
     public void onSessionFetchFailure() {
 
     }
+
+    /** Create a new dummy account for the sync adapter
+     *
+     * @param context The application context
+     */
+    public static Account createSyncAccount(Context context) {
+        // Create the account type and default account
+        Account newAccount = new Account(
+                ACCOUNT, ACCOUNT_TYPE);
+        // Get an instance of the Android account manager
+        AccountManager accountManager =
+                (AccountManager) context.getSystemService(
+                        Context.ACCOUNT_SERVICE);
+        return newAccount;
+    }
+
 }
