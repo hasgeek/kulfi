@@ -1,5 +1,6 @@
 package com.hasgeek.zalebi.adapter;
 
+import android.content.Context;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,26 +19,39 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.SessionsViewHolder>{
+    private  Context context;
     private List<Session> mSessions = new ArrayList<>();
 
-    public SessionListAdapter(){
+    public SessionListAdapter(Context context){
+        this.context = context;
         Gson gson = new Gson();
         try{
-            File sessionListJSONFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/hasgeek/sessions.json");
+            File sessionListJSONFile = new File(
+                    Environment.getExternalStorageDirectory().getAbsolutePath()+"/hasgeek/sessions.json");
+
             StringBuilder json = new StringBuilder("");
+            InputStream fileStream;
             if(sessionListJSONFile.exists()){
-                Log.d("hasgeek","found file");
-                BufferedReader fileReader = new BufferedReader(new FileReader(sessionListJSONFile));
-                String line = "";
-                while ((line = fileReader.readLine()) != null){
-                    json.append(line);
-                }
+                Log.d("hasgeek","found file in SD card");
+                fileStream = new FileInputStream(sessionListJSONFile);
+            }
+            else{
+                fileStream = context.getResources().openRawResource(R.raw.sessions);
+            }
+
+            BufferedReader fileReader = new BufferedReader(new InputStreamReader(fileStream));
+            String line = "";
+            while ((line = fileReader.readLine()) != null){
+                json.append(line);
             }
             JSONObject sessionsJSON = new JSONObject(json.toString());
             JSONArray schedules = sessionsJSON.getJSONArray("schedule");
