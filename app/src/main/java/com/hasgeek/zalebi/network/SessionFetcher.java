@@ -24,16 +24,9 @@ import java.util.Arrays;
 public class SessionFetcher {
     Context context;
     RequestQueue requestQueue;
-    SessionFetchListener mSessionFetchListener;
 
-    public interface SessionFetchListener{
-        void onSessionFetchSuccess(ArrayList<Session> sessions);
-        void onSessionFetchFailure();
-    }
-
-    public SessionFetcher(Context context, SessionFetchListener sessionFetchListener) {
+    public SessionFetcher(Context context) {
         this.context = context;
-        mSessionFetchListener = sessionFetchListener;
         requestQueue = Volley.newRequestQueue(context);
     }
 
@@ -55,7 +48,6 @@ public class SessionFetcher {
                             Log.d("talkfunnel","added sessions for slot "+slot.getString("slot"));
                         }
                     }
-                    mSessionFetchListener.onSessionFetchSuccess(sessionList);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

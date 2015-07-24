@@ -11,9 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +18,13 @@ import java.util.Arrays;
 public class SessionsReader {
 
     private final Context context;
+    private final SessionReadListener listener;
+    private int resourceId;
 
-    public SessionsReader(Context context){
+    public SessionsReader(Context context,SessionReadListener sessionReadListener){
         this.context = context;
+        this.listener = sessionReadListener;
+        resourceId = R.raw.sessions;
     }
 
     public ArrayList<Session> readSessions(){
@@ -31,7 +32,7 @@ public class SessionsReader {
         try {
             BufferedReader fileReader = new BufferedReader(
                     new InputStreamReader(context.getResources().
-                            openRawResource(R.raw.sessions)));
+                            openRawResource(resourceId)));
             String line = "";
             StringBuilder json = new StringBuilder("");
             while ((line = fileReader.readLine()) != null) {
@@ -52,11 +53,23 @@ public class SessionsReader {
                     Log.d("talkfunnel", "added sessions for slot " + slot.getString("slot"));
                 }
             }
+            listener.onSessionReadSuccess(sessions);
         }
         catch (Exception ex){
+            listener.onSessionReadFailure();
             Log.e("hasgeek",
                     "Exception while reading sessions from the Resource file "+ex.getMessage());
         }
         return sessions;
     }
+
+    public interface SessionReadListener {
+        public void onSessionReadSuccess(ArrayList<Session> sessions);
+        public void onSessionReadFailure();
+    }
+
+    void setResourceId(int resourceId){
+        this.resourceId = resourceId;
+    }
+
 }
