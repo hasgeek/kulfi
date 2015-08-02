@@ -54,4 +54,20 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/scan_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_camera_alt_white_48dp"
+        app:backgroundTint="@color/orange"
+        app:layout_anchor="@id/main_content"
+        app:layout_anchorGravity="bottom|right|end" />
+
 </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/list_divider_width"
+    android:background="@android:color/white"
+    android:gravity="center_vertical"
+    android:layout_height="100dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/profile_image"
+        android:src="@drawable/bb"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/conf_name"
+            android:text="DROIDCON 2015"
+            android:textSize="@dimen/conf_name"
+            android:textColor="@color/sub_title"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person_name"
+            android:text="Walter White"
+            android:textSize="@dimen/person_name"
+            android:textColor="@color/title"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person_desc"
+            android:text="Senior Programmer, Multunus"
+            android:textSize="@dimen/person_desc"
+            android:textColor="@color/sub_title"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

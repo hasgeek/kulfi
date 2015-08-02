@@ -1,7 +1,10 @@
 package com.hasgeek.zalebi.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,19 +13,26 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
+import com.hasgeek.zalebi.model.Attendee;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TalkFunnelActivity extends AppCompatActivity{
+
+    // Get rid of these once we have support for multiple conferences
+    public static final String SPACE_ID = "56";
+    public static final String SPACE_NAME = "MetaRefresh";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +44,7 @@ public class TalkFunnelActivity extends AppCompatActivity{
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("MetaRefresh");
+        collapsingToolbar.setTitle(SPACE_NAME);
 
         final ActionBar actionBar = getSupportActionBar();
 //        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -47,11 +57,14 @@ public class TalkFunnelActivity extends AppCompatActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(viewPager);
+        Attendee attendee = new Attendee();
+        attendee.setSpaceId(SPACE_ID);
+        attendee.save();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_talk_funnel, menu);
+        getMenuInflater().inflate(R.menu.menu_talk_funnel, menu);
         return true;
     }
 
@@ -59,8 +72,11 @@ public class TalkFunnelActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_login) {
+            String url = "http://auth.hasgeek.com/auth?client_id=eDnmYKApSSOCXonBXtyoDQ&scope=id+email+phone+organizations+teams+com.talkfunnel:*&response_type=token";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -72,6 +88,34 @@ public class TalkFunnelActivity extends AppCompatActivity{
         adapter.addFragment(new ContactFragment(), getString(R.string.contacts));
         adapter.addFragment(new ChatFragment(), getString(R.string.chat));
         viewPager.setAdapter(adapter);
+        final FloatingActionButton scanBadge = (FloatingActionButton) findViewById(R.id.scan_badge);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                /* Need a better way of doing this
+                position=1 => Contact fragment
+                */
+
+                if(position == 1){
+                    scanBadge.setVisibility(View.VISIBLE);
+                }else{
+                    scanBadge.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
     }
     
     static class Adapter extends FragmentPagerAdapter {
