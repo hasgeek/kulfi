@@ -57,9 +57,9 @@ public class TalkFunnelActivity extends AppCompatActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(viewPager);
-        Attendee attendee = new Attendee();
-        attendee.setSpaceId(SPACE_ID);
-        attendee.save();
+//        Attendee attendee = new Attendee();
+//        attendee.setSpaceId(SPACE_ID);
+//        attendee.save();
     }
 
     @Override
