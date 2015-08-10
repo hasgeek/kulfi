@@ -33,6 +33,10 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.hasgeek.zalebi" />
 
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="9d6c09d287c77e08af7fc898d52e443a"/>
+
         <activity
             android:name=".activity.TalkFunnelActivity"
             android:label="@string/app_name"

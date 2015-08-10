@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.bugsnag.android.Bugsnag;
+
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
@@ -37,6 +39,8 @@ public class TalkFunnelActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_talk_funnel);
+
+        Bugsnag.init(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
