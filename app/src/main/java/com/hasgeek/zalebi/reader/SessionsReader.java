@@ -40,7 +40,7 @@ public class SessionsReader {
             }
             JSONObject sessionsJSON = new JSONObject(json.toString());
             JSONArray schedules = sessionsJSON.getJSONArray("schedule");
-            Log.d("hasgeek", "number of schedules " + schedules.length());
+//            Log.d("hasgeek", "number of schedules " + schedules.length());
             Gson gson = new Gson();
             for (int i = 0; i < schedules.length(); i++) {
                 JSONObject schedule = (JSONObject) schedules.get(i);
@@ -50,7 +50,7 @@ public class SessionsReader {
                     sessions.addAll(
                             Arrays.asList(gson.fromJson(slot.getString("sessions"),
                             Session[].class)));
-                    Log.d("talkfunnel", "added sessions for slot " + slot.getString("slot"));
+//                    Log.d("talkfunnel", "added sessions for slot " + slot.getString("slot"));
                 }
             }
             listener.onSessionReadSuccess(sessions);

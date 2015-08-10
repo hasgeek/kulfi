@@ -29,7 +29,7 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
     // An account type, in the form of a domain name
     public static final String ACCOUNT_TYPE = "com.hasgeek.zalebi.account";
     // The account name
-    public static final String ACCOUNT = "dummyaccount";
+    public static final String ACCOUNT = "hasgeek";
 
     // Sync interval constants
     public static final long SYNC_INTERVAL = 120L;
@@ -54,6 +54,11 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
         mAccount = createSyncAccount(mRecyclerView.getContext());
         ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
         ContentResolver.setIsSyncable(mAccount, AUTHORITY, 1);
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+//        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+//        ContentResolver.requestSync(mAccount, AUTHORITY, bundle);
+//        Log.d("hasgeek", "initiated requestSync for immeidate sync with SyncAdapter");
 
         ContentResolver.addPeriodicSync(
                 mAccount,
@@ -61,11 +66,6 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
                 Bundle.EMPTY,
                 SYNC_INTERVAL);
         Log.d("hasgeek", "initiated periodic sync for SyncAdapter");
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(mAccount, AUTHORITY, bundle);
-        Log.d("hasgeek", "initiated requestSync for immeidate sync with SyncAdapter");
         return mRecyclerView;
     }
 

@@ -1,14 +1,26 @@
 package com.hasgeek.zalebi.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.orm.SugarRecord;
+
 /**
  * Created by heisenberg on 29/05/15.
  */
-public class Session {
-    String title;
-    String description;
-    String start;
-    String end;
-    String speaker;
+public class Session extends SugarRecord<Session> {
+    private String title;
+    private String description;
+    private String start;
+    private String end;
+    private String speaker;
+
+    @SerializedName("space_id")
+    @Expose
+    private String spaceId;
+
+    @SerializedName("_id")
+    @Expose
+    private Long id;
 
     public String getTitle() {
         return title;
@@ -48,5 +60,22 @@ public class Session {
 
     public void setSpeaker(String speaker) {
         this.speaker = speaker;
+    }
+
+    public String getSpaceId() {
+        return spaceId;
+    }
+
+    public void setSpaceId(String spaceId) {
+        this.spaceId = spaceId;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
