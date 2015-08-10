@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Created by heisenberg on 09/08/15.
@@ -30,24 +31,29 @@ public class AttendeeListFetcher {
     }
 
     public void fetch() {
-        CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.GET, "https://metarefresh.talkfunnel.com/2015/participants/json", null, new Response.Listener<JSONObject>() {
+        CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.GET, "https://rootconf.talkfunnel.com/2015/participants/json", null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONObject response) {
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.serializeNulls();
-                Gson gson = gsonBuilder.create();
-                final List<Attendee> attendees = Arrays.asList(gson.fromJson(response.optString("participants", "{}"), Attendee[].class));
-                for (Attendee attendee : attendees) {
-                    List<Attendee> persistedAttendees = Attendee.find(Attendee.class, "user_id = ?", attendee.getUserId());
-                    if (persistedAttendees.isEmpty()) {
-                        attendee.save();
-                    } else {
-                        for (Attendee persistedAttendee : persistedAttendees) {
-                            persistedAttendee.updateProperties(attendee);
-                            persistedAttendee.save();
+            public void onResponse(final JSONObject response) {
+                new ScheduledThreadPoolExecutor(1).execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        Gson gson = gsonBuilder.create();
+                        final List<Attendee> attendees = Arrays.asList(gson.fromJson(response.optString("participants", "{}"), Attendee[].class));
+                        for (Attendee attendee : attendees) {
+                            List<Attendee> persistedAttendees = Attendee.find(Attendee.class, "user_id = ?", attendee.getUserId());
+                            if (persistedAttendees.isEmpty()) {
+                                attendee.save();
+                            } else {
+                                for (Attendee persistedAttendee : persistedAttendees) {
+                                    //TODO: Get rid of blind update
+                                    persistedAttendee.updateProperties(attendee);
+                                    persistedAttendee.save();
+                                }
+                            }
                         }
                     }
-                }
+                });
             }
         }, new Response.ErrorListener() {
             @Override
