@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,7 @@ import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
-import com.hasgeek.zalebi.model.Attendee;
+import com.hasgeek.zalebi.network.AttendeeListFetcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +46,6 @@ public class TalkFunnelActivity extends AppCompatActivity{
         collapsingToolbar.setTitle(SPACE_NAME);
 
         final ActionBar actionBar = getSupportActionBar();
-//        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         if (viewPager != null) {
@@ -57,9 +54,7 @@ public class TalkFunnelActivity extends AppCompatActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(viewPager);
-        Attendee attendee = new Attendee();
-        attendee.setSpaceId(SPACE_ID);
-        attendee.save();
+        new AttendeeListFetcher(this).fetch();
     }
 
     @Override

@@ -10,8 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.hasgeek.zalebi.model.Session;
 
 import org.json.JSONObject;
 
@@ -36,7 +34,7 @@ public class SessionFetcher {
                     File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/hasgeek");
                     dir.mkdir();
                     FileWriter fileWriter = new FileWriter(new File(dir.getAbsolutePath() + "/sessions.json"));
-                    Log.d("hasgeek","Written the sessions JSON successfully*****");
+                    Log.e("hasgeek","Written the sessions JSON successfully*****");
                     fileWriter.write(response.toString());
                     fileWriter.close();
                 } catch (Exception e) {

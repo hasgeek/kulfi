@@ -92,4 +92,27 @@ public class Attendee extends SugarRecord<Attendee> {
     public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof Attendee)){
+            return false;
+        }
+        if(object == this){
+            return true;
+        }
+        Attendee otherAttendee = (Attendee) object;
+        return (this.getCompany().equals(otherAttendee.getCompany())
+                && this.getFullname().equals(otherAttendee.getFullname())
+                && this.getJobTitle().equals(otherAttendee.getJobTitle())
+                && this.getSpaceId().equals(otherAttendee.getSpaceId()));
+    }
+
+    public void updateProperties(Attendee otherAttendee) {
+        this.setCompany(otherAttendee.getCompany());
+        this.setFullname(otherAttendee.getFullname());
+        this.setJobTitle(otherAttendee.getJobTitle());
+        this.setKey(otherAttendee.getKey());
+        this.setSpaceId(otherAttendee.getSpaceId());
+    }
 }
