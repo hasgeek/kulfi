@@ -1,10 +1,8 @@
 package com.hasgeek.zalebi.fragment;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hasgeek.zalebi.activity.TalkFunnelActivity;
 import com.hasgeek.zalebi.model.Contact;
 import com.hasgeek.zalebi.model.ScannedData;
 import com.hasgeek.zalebi.network.CustomJsonObjectRequest;
@@ -32,7 +29,7 @@ import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
 public class BadgeScannerFragment extends DialogFragment implements ZBarScannerView.ResultHandler {
-    private OnFragmentInteractionListener mListener;
+    private onContactFetchListener mListener;
     private RequestQueue mRequestQueue;
     public ZBarScannerView mScannerView;
 
@@ -73,18 +70,17 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (onContactFetchListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement onContactFetchListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -110,6 +106,7 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
                         }
                         contact.save();
                     }
+                    mListener.onContactFetchComplete();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -126,7 +123,7 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
         }
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
+    public interface onContactFetchListener {
+        public void onContactFetchComplete();
     }
 }

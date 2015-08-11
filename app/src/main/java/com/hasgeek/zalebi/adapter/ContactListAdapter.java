@@ -64,9 +64,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         return jobTitle + ", " + company;
     }
 
-//    public void updateContactList(List<Contact> contacts) {
-//        mContacts.clear();
-//        mContacts.addAll(contacts);
-//        notifyDataSetChanged();
-//    }
+    public void updateContactList(List<Contact> contacts) {
+        mContacts.clear();
+        mContacts.addAll(contacts);
+        notifyDataSetChanged();
+    }
 }

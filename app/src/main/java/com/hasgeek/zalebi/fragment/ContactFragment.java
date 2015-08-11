@@ -48,4 +48,9 @@ public class ContactFragment extends Fragment {
             }
         });
     }
+
+    public void updateContactList(){
+        List<Contact> contacts = Contact.listAll(Contact.class);
+        mContactListAdapter.updateContactList(contacts);
+    }
 }

@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.View;
 import com.bugsnag.android.Bugsnag;
 
 import com.hasgeek.zalebi.R;
+import com.hasgeek.zalebi.fragment.BadgeScannerFragment;
 import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
@@ -29,11 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TalkFunnelActivity extends AppCompatActivity{
+public class TalkFunnelActivity extends AppCompatActivity implements BadgeScannerFragment.onContactFetchListener {
 
     // Get rid of these once we have support for multiple conferences
     public static final String SPACE_ID = "56";
     public static final String SPACE_NAME = "MetaRefresh";
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +54,13 @@ public class TalkFunnelActivity extends AppCompatActivity{
 
         final ActionBar actionBar = getSupportActionBar();
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPager != null) {
-            setupViewPager(viewPager);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        if (mViewPager != null) {
+            setupViewPager(mViewPager);
         }
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
         new AttendeeListFetcher(this).fetch();
     }
 
@@ -101,9 +104,9 @@ public class TalkFunnelActivity extends AppCompatActivity{
                 position=1 => Contact fragment
                 */
 
-                if(position == 1){
+                if (position == 1) {
                     scanBadge.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     scanBadge.setVisibility(View.GONE);
                 }
             }
@@ -114,7 +117,7 @@ public class TalkFunnelActivity extends AppCompatActivity{
             }
         });
     }
-    
+
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
@@ -141,6 +144,24 @@ public class TalkFunnelActivity extends AppCompatActivity{
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitles.get(position);
+        }
+
+        public Fragment getFragment(int position) {
+            return mFragments.get(position);
+        }
+    }
+
+
+    @Override
+    public void onContactFetchComplete() {
+        try {
+            int currentItem = mViewPager.getCurrentItem();
+            Adapter adapter = (Adapter) mViewPager.getAdapter();
+            ContactFragment contactFragment = (ContactFragment) adapter.getFragment(currentItem);
+            contactFragment.updateContactList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("funnel", e.getMessage());
         }
     }
 }
