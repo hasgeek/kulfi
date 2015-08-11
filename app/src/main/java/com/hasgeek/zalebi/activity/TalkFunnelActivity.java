@@ -113,8 +113,6 @@ public class TalkFunnelActivity extends AppCompatActivity{
 
             }
         });
-
-
     }
     
     static class Adapter extends FragmentPagerAdapter {
@@ -145,5 +143,4 @@ public class TalkFunnelActivity extends AppCompatActivity{
             return mFragmentTitles.get(position);
         }
     }
-
 }

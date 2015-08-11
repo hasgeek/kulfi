@@ -15,13 +15,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.hasgeek.zalebi.activity.TalkFunnelActivity;
+import com.hasgeek.zalebi.model.Contact;
 import com.hasgeek.zalebi.model.ScannedData;
 import com.hasgeek.zalebi.network.CustomJsonObjectRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
@@ -86,6 +90,8 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
     @Override
     public void handleResult(Result result) {
         ScannedData scannedData;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        final Gson gson = gsonBuilder.create();
         try {
             scannedData = ScannedData.parse(result.getContents());
             String participantUrl = "https://rootconf.talkfunnel.com/2015/participant" +
@@ -94,6 +100,16 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
             CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.GET, participantUrl, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    Contact contact = gson.fromJson(response.optString("participant", "{}"), Contact.class);
+                    List<Contact> persistedContacts = Contact.find(Contact.class, "user_id = ?", contact.getUserId());
+                    if (persistedContacts.isEmpty()) {
+                        contact.save();
+                    } else {
+                        for (Contact persistedContact : persistedContacts) {
+                            persistedContact.delete();
+                        }
+                        contact.save();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override

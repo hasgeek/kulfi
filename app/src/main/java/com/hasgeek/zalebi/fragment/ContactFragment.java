@@ -13,9 +13,13 @@ import android.view.ViewGroup;
 
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.adapter.ContactListAdapter;
+import com.hasgeek.zalebi.model.Contact;
+
+import java.util.List;
 
 public class ContactFragment extends Fragment {
     RecyclerView mRecyclerView;
+    ContactListAdapter mContactListAdapter;
     public ContactFragment() {
     }
 
@@ -27,7 +31,9 @@ public class ContactFragment extends Fragment {
         mRecyclerView = (RecyclerView) mRecyclerView.findViewById(R.id.contact_list);
         //recyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
-        mRecyclerView.setAdapter(new ContactListAdapter());
+        List<Contact> contacts = Contact.listAll(Contact.class);
+        mContactListAdapter = new ContactListAdapter(contacts);
+        mRecyclerView.setAdapter(mContactListAdapter);
         return mRecyclerView;
     }
 
