@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hasgeek.zalebi.model.Contact;
 import com.hasgeek.zalebi.model.ScannedData;
+import com.hasgeek.zalebi.network.ContactFetcher;
 import com.hasgeek.zalebi.network.CustomJsonObjectRequest;
 
 import org.json.JSONObject;
@@ -28,7 +29,8 @@ import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
-public class BadgeScannerFragment extends DialogFragment implements ZBarScannerView.ResultHandler {
+
+public class BadgeScannerFragment extends DialogFragment implements ZBarScannerView.ResultHandler, ContactFetcher.ContactFetchListener {
     private onContactFetchListener mListener;
     private RequestQueue mRequestQueue;
     public ZBarScannerView mScannerView;
@@ -87,33 +89,12 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
     public void handleResult(Result result) {
         ScannedData scannedData;
         GsonBuilder gsonBuilder = new GsonBuilder();
-        final Gson gson = gsonBuilder.create();
         try {
             scannedData = ScannedData.parse(result.getContents());
             String participantUrl = "https://rootconf.talkfunnel.com/2015/participant" +
                     "?key=" + scannedData.getKey() +
                     "&puk=" + scannedData.getPuk();
-            CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.GET, participantUrl, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Contact contact = gson.fromJson(response.optString("participant", "{}"), Contact.class);
-                    List<Contact> persistedContacts = Contact.find(Contact.class, "user_id = ?", contact.getUserId());
-                    if (persistedContacts.isEmpty()) {
-                        contact.save();
-                    } else {
-                        for (Contact persistedContact : persistedContacts) {
-                            persistedContact.delete();
-                        }
-                        contact.save();
-                    }
-                    mListener.onContactFetchComplete();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            }, getActivity());
-            mRequestQueue.add(customJsonObjectRequest);
+            new ContactFetcher(getActivity(), this).fetch(participantUrl);
         } catch (ScannedData.UnknownBadgeException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Unknown badge!", Toast.LENGTH_LONG).show();
@@ -121,6 +102,16 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
             mScannerView.stopCamera();
             dismiss();
         }
+    }
+
+    @Override
+    public void onContactFetchSuccess(Contact contact) {
+        mListener.onContactFetchComplete();
+    }
+
+    @Override
+    public void onContactFetchFailure() {
+
     }
 
     public interface onContactFetchListener {
