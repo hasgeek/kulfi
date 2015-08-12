@@ -20,6 +20,7 @@ import android.view.View;
 
 import com.bugsnag.android.Bugsnag;
 
+import com.hasgeek.zalebi.BuildConfig;
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.fragment.BadgeScannerFragment;
 import com.hasgeek.zalebi.fragment.ChatFragment;
@@ -43,7 +44,10 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_talk_funnel);
 
-        Bugsnag.init(this);
+        if(!BuildConfig.DEBUG) {
+            Bugsnag.init(this);
+            
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
