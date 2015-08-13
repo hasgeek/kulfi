@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bugsnag.android.Bugsnag;
 
@@ -27,6 +28,7 @@ import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
 import com.hasgeek.zalebi.network.AttendeeListFetcher;
+import com.hasgeek.zalebi.network.AuthHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
     public static final String SPACE_ID = "56";
     public static final String SPACE_NAME = "MetaRefresh";
     private ViewPager mViewPager;
+    AuthHelper authHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
             
         }
 
+        authHelper =  new AuthHelper(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -71,6 +75,15 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_talk_funnel, menu);
+
+        if(authHelper.isLoggedIn()){
+            MenuItem logoutOption = menu.findItem(R.id.action_logout);
+            logoutOption.setVisible(true);
+        }else{
+            MenuItem loginOption = menu.findItem(R.id.action_login);
+            loginOption.setVisible(true);
+        }
+
         return true;
     }
 
@@ -83,6 +96,12 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
+        }
+
+        if(id == R.id.action_logout){
+            authHelper.invalidateSession();
+            Toast.makeText(this,"Successfully Logged out", Toast.LENGTH_LONG).show();
+            invalidateOptionsMenu();
         }
 
         return super.onOptionsItemSelected(item);
