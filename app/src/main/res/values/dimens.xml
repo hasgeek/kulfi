@@ -7,4 +7,7 @@
     <dimen name="person_name">@dimen/title_size</dimen>
     <dimen name="conf_name">12sp</dimen>
     <dimen name="person_desc">@dimen/subtitle_size</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
 </resources>

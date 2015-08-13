@@ -10,4 +10,5 @@
     <color name="sub_title">#BBBBBB</color>
     <color name="session_title">@color/title</color>
     <color name="speaker">@color/sub_title</color>
+    <color name="window_background">#FFF5F5F5</color>
 </resources>
