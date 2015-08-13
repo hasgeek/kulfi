@@ -1,0 +1,65 @@
+package com.hasgeek.zalebi.activity;
+
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.hasgeek.zalebi.R;
+import com.hasgeek.zalebi.model.Session;
+import com.hasgeek.zalebi.util.DateTimeUtils;
+
+public class SessionActivity extends ActionBarActivity {
+    Session mSession;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_session);
+        mSession = getSessionDetailsFromBundle();
+   }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setSessionDetails();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_session, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private Session getSessionDetailsFromBundle() {
+        Bundle bundle = getIntent().getExtras();
+        return bundle.getParcelable("session");
+    }
+
+    private void setSessionDetails() {
+        setSessionTextView(R.id.session_title, mSession.getTitle());
+        setSessionTextView(R.id.session_day, DateTimeUtils.displayableDate(mSession.getStart()));
+        setSessionTextView(R.id.session_time_interval,
+                DateTimeUtils.displayableTimeInterval(mSession.getStart(), mSession.getEnd()));
+        setSessionTextView(R.id.session_room, mSession.getRoom().replaceAll("-", " "));
+        setSessionTextView(R.id.session_description, Html.fromHtml(mSession.getDescription()));
+    }
+
+    private void setSessionTextView(int id, CharSequence value) {
+        TextView textView = (TextView) findViewById(id);
+        textView.setText(value);
+    }
+}

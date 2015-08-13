@@ -1,5 +1,8 @@
 package com.hasgeek.zalebi.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hasgeek.zalebi.R;
+import com.hasgeek.zalebi.activity.SessionActivity;
 import com.hasgeek.zalebi.model.Session;
-import com.hasgeek.zalebi.util.TimeUtils;
+import com.hasgeek.zalebi.util.DateTimeUtils;
 
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         protected TextView mSpeakerName;
         protected TextView mStartTime;
         protected TextView mDuration;
+        protected Session mSession;
 
         public SessionsViewHolder(View view) {
             super(view);
@@ -40,8 +45,15 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
 
         @Override
         public void onClick(View v) {
+            Context context = v.getContext();
             TextView sessionTitle = (TextView) v.findViewById(R.id.session_title);
             Log.e("funnel", "click..." + sessionTitle.getText());
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("session", mSession);
+            Intent intent = new Intent(context, SessionActivity.class);
+            intent.putExtras(bundle);
+            context.startActivity(intent);
         }
     }
 
@@ -56,8 +68,9 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         Session session = mSessions.get(position);
         holder.mSessionTitle.setText(session.getTitle());
         holder.mSpeakerName.setText(session.getSpeaker());
-        holder.mStartTime.setText(TimeUtils.displayableTime(session.getStart()));
-        holder.mDuration.setText(TimeUtils.getDuration(session.getStart(), session.getEnd()));
+        holder.mStartTime.setText(DateTimeUtils.displayableTime(session.getStart()));
+        holder.mDuration.setText(DateTimeUtils.getDuration(session.getStart(), session.getEnd()));
+        holder.mSession = session;
     }
 
     @Override

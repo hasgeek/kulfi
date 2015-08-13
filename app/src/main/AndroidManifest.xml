@@ -87,5 +87,12 @@
             android:authorities="com.hasgeek.zalebi.sync.provider"
             android:exported="false"
             android:syncable="true" />
+
+        <activity
+            android:name=".activity.SessionActivity"
+            android:label="@string/title_activity_session"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
+
 </manifest>

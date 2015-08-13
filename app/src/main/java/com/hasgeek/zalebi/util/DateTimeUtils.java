@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by heisenberg on 27/06/15.
  */
-public class TimeUtils {
+public class DateTimeUtils {
     public static String displayableTime(String startTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -36,5 +36,23 @@ public class TimeUtils {
         }
 
         return duration;
+    }
+
+    public static String displayableTimeInterval(String startTime, String endTime) {
+        return displayableTime(startTime) + " - " + displayableTime(endTime);
+    }
+
+    public static String displayableDate(String startTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = dateFormat.parse(startTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+        return simpleDateFormat.format(date);
     }
 }
