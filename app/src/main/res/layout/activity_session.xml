@@ -140,7 +140,6 @@
                         android:id="@+id/session_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/cheese_ipsum"
                         android:textColor="@android:color/primary_text_light"
                         android:textSize="16dp" />
 
