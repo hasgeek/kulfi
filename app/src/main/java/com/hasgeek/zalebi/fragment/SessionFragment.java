@@ -20,6 +20,7 @@ import com.hasgeek.zalebi.model.Session;
 import com.hasgeek.zalebi.reader.SessionsReader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SessionFragment extends Fragment implements SessionsReader.SessionReadListener{
 
@@ -54,12 +55,6 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
         mAccount = createSyncAccount(mRecyclerView.getContext());
         ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
         ContentResolver.setIsSyncable(mAccount, AUTHORITY, 1);
-//        Bundle bundle = new Bundle();
-//        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-//        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-//        ContentResolver.requestSync(mAccount, AUTHORITY, bundle);
-//        Log.d("hasgeek", "initiated requestSync for immeidate sync with SyncAdapter");
-
         ContentResolver.addPeriodicSync(
                 mAccount,
                 AUTHORITY,
@@ -80,7 +75,7 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
     }
 
     @Override
-    public void onSessionReadSuccess(ArrayList<Session> sessions) {
+    public void onSessionReadSuccess(List<Session> sessions) {
         SessionListAdapter sessionListAdapter = new SessionListAdapter(sessions);
         mRecyclerView.setAdapter(sessionListAdapter);
     }

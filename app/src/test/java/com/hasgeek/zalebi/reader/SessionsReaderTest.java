@@ -12,6 +12,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -32,15 +33,14 @@ public class SessionsReaderTest extends TestCase {
 
     @Test
     public void willReadSessionsFromSDCard(){
-        ArrayList<Session> sessions = sessionsReader.readSessions();
+        List<Session> sessions = sessionsReader.readSessions();
         assertTrue(sessions.size() == 41);
         verify(sessionReadListener).onSessionReadSuccess(sessions);
     }
 
     @Test
     public void willFailWhenReadingFromSDCardFails(){
-        sessionsReader.setResourceId(-1);
-        ArrayList<Session> sessions = sessionsReader.readSessions();
+        List<Session> sessions = sessionsReader.readSessions();
         verify(sessionReadListener).onSessionReadFailure();
         verify(sessionReadListener,never()).onSessionReadSuccess(sessions);
     }

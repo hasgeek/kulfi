@@ -29,6 +29,7 @@ import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
 import com.hasgeek.zalebi.network.AttendeeListFetcher;
 import com.hasgeek.zalebi.network.AuthHelper;
+import com.hasgeek.zalebi.util.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,8 @@ import java.util.List;
 public class TalkFunnelActivity extends AppCompatActivity implements BadgeScannerFragment.onContactFetchListener {
 
     // Get rid of these once we have support for multiple conferences
-    public static final String SPACE_ID = "56";
-    public static final String SPACE_NAME = "MetaRefresh";
+    public static final String SPACE_ID = "55";
+    public static final String SPACE_NAME = "JSFoo";
     private ViewPager mViewPager;
     AuthHelper authHelper;
 
@@ -92,9 +93,9 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
         int id = item.getItemId();
 
         if (id == R.id.action_login) {
-            String url = "http://auth.hasgeek.com/auth?client_id=eDnmYKApSSOCXonBXtyoDQ&scope=id+email+phone+organizations+teams+com.talkfunnel:*&response_type=token";
+
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
+            intent.setData(Uri.parse(Config.AUTH_URL));
             startActivity(intent);
         }
 

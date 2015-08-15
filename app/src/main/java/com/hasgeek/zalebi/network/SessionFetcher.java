@@ -10,7 +10,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hasgeek.zalebi.model.Session;
+import com.hasgeek.zalebi.util.Config;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,18 +32,18 @@ public class SessionFetcher {
     }
 
     public void fetch(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://metarefresh.talkfunnel.com/2015/json", new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                Config.CONF_URL, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject json) {
                 try {
-//                    JSONObject sessionsJSON = new JSONObject(response.toString());
                     JSONArray schedules = json.getJSONArray("schedule");
                     Log.d("hasgeek", "number of schedules " + schedules.length());
                     String spaceId = json.getJSONObject("space").getString("id");
                     Log.d("hasgeek", "spaceId " + spaceId);
 
-                    Gson gson = new Gson();
-                    Session.deleteAll(Session.class,"space_id = ?",spaceId);
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    Gson gson = gsonBuilder.create();
                     List<Session> sessions = new ArrayList<>();
                     for (int i = 0; i < schedules.length(); i++) {
                         JSONObject schedule = (JSONObject) schedules.get(i);
@@ -56,9 +58,14 @@ public class SessionFetcher {
                     }
                     for(Session session:sessions){
                         session.setSpaceId(spaceId);
+//                        session.setSessionId(session.getId());
+//                        session.setId(null);
+//                        session.save();
+                        session.saveOrUpdate();
+                        Log.d("hasgeek","session id "+session.getSessionId()+" id "+session.getId());
                     }
-                    Session.saveInTx(sessions);
                     Log.d("hasgeek", "number of sessions inserted for space ID " + sessions.size());
+//                    Log.d("hasgeek","number of sessions retrieved from DB "+Session.listAll(Session.class).size());
                 } catch (Exception e) {
                     Log.e("hasgeek","Exception raised!!!!"+e);
                     e.printStackTrace();

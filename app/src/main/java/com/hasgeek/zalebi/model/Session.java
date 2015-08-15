@@ -2,10 +2,13 @@ package com.hasgeek.zalebi.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
+
+import java.util.List;
 
 /**
  * Created by heisenberg on 29/05/15.
@@ -22,9 +25,13 @@ public class Session extends SugarRecord<Session> implements Parcelable {
     @Expose
     private String spaceId;
 
-    @SerializedName("_id")
-    @Expose
-    private Long id;
+//    @SerializedName("id")
+//    @Expose
+    private Long sessionId;
+
+    public Session(){
+
+    }
 
     public String getTitle() {
         return title;
@@ -82,13 +89,12 @@ public class Session extends SugarRecord<Session> implements Parcelable {
         this.room = room;
     }
 
-    @Override
-    public Long getId() {
-        return id;
+    public Long getSessionId() {
+        return sessionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSessionId(Long sessionId) {
+        this.sessionId = sessionId;
     }
 
     protected Session(Parcel in) {
@@ -99,7 +105,7 @@ public class Session extends SugarRecord<Session> implements Parcelable {
         speaker = in.readString();
         spaceId = in.readString();
         room = in.readString();
-        id = in.readByte() == 0x00 ? null : in.readLong();
+        sessionId = in.readByte() == 0x00 ? null : in.readLong();
     }
 
     @Override
@@ -117,11 +123,11 @@ public class Session extends SugarRecord<Session> implements Parcelable {
         dest.writeString(spaceId);
         String roomString = (room == null) ? "" : room;
         dest.writeString(roomString);
-        if (id == null) {
+        if (sessionId == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeLong(id);
+            dest.writeLong(sessionId);
         }
     }
 
@@ -137,4 +143,25 @@ public class Session extends SugarRecord<Session> implements Parcelable {
             return new Session[size];
         }
     };
+
+    public void saveOrUpdate() {
+        setSessionId(getId());
+        setId(null);
+        List<Session> existingSessions = Session.find(Session.class, "session_id = ?", ""+sessionId);
+        if (existingSessions.isEmpty()){
+            Log.d("hasgeek","Data is new, so saving");
+            save();
+        }
+        else{
+            Log.d("hasgeek","Data exists, so updating");
+            Session existingSession = existingSessions.get(0);
+            existingSession.setStart(start);
+            existingSession.setEnd(end);
+            existingSession.setSpeaker(speaker);
+            existingSession.setTitle(title);
+            existingSession.setRoom(room);
+            existingSession.setDescription(description);
+            existingSession.save();
+        }
+    }
 }
