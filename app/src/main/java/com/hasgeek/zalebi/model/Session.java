@@ -148,20 +148,11 @@ public class Session extends SugarRecord<Session> implements Parcelable {
         setSessionId(getId());
         setId(null);
         List<Session> existingSessions = Session.find(Session.class, "session_id = ?", ""+sessionId);
-        if (existingSessions.isEmpty()){
-            Log.d("hasgeek","Data is new, so saving");
-            save();
-        }
-        else{
+        if (existingSessions.size() > 0){
             Log.d("hasgeek","Data exists, so updating");
             Session existingSession = existingSessions.get(0);
-            existingSession.setStart(start);
-            existingSession.setEnd(end);
-            existingSession.setSpeaker(speaker);
-            existingSession.setTitle(title);
-            existingSession.setRoom(room);
-            existingSession.setDescription(description);
-            existingSession.save();
+            setId(existingSession.getId());
         }
+        save();
     }
 }

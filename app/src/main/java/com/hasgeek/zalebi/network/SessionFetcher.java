@@ -38,7 +38,6 @@ public class SessionFetcher {
             public void onResponse(JSONObject json) {
                 try {
                     JSONArray schedules = json.getJSONArray("schedule");
-                    Log.d("hasgeek", "number of schedules " + schedules.length());
                     String spaceId = json.getJSONObject("space").getString("id");
                     Log.d("hasgeek", "spaceId " + spaceId);
 
@@ -53,16 +52,11 @@ public class SessionFetcher {
                             sessions.addAll(Arrays.asList(gson.fromJson(slot.getString("sessions"),
                                     Session[].class)));
 
-                            Log.d("talkfunnel", "added sessions for slot " + slot.getString("slot"));
                         }
                     }
                     for(Session session:sessions){
                         session.setSpaceId(spaceId);
-//                        session.setSessionId(session.getId());
-//                        session.setId(null);
-//                        session.save();
                         session.saveOrUpdate();
-                        Log.d("hasgeek","session id "+session.getSessionId()+" id "+session.getId());
                     }
                     Log.d("hasgeek", "number of sessions inserted for space ID " + sessions.size());
 //                    Log.d("hasgeek","number of sessions retrieved from DB "+Session.listAll(Session.class).size());
