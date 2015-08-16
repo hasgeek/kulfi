@@ -15,7 +15,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hasgeek.zalebi.activity.TalkFunnelActivity;
 import com.hasgeek.zalebi.model.Contact;
+import com.hasgeek.zalebi.model.ContactQueue;
 import com.hasgeek.zalebi.model.ScannedData;
 import com.hasgeek.zalebi.network.ContactFetcher;
 import com.hasgeek.zalebi.network.CustomJsonObjectRequest;
@@ -33,6 +35,8 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 public class BadgeScannerFragment extends DialogFragment implements ZBarScannerView.ResultHandler, ContactFetcher.ContactFetchListener {
     private onContactFetchListener mListener;
     private RequestQueue mRequestQueue;
+    private ScannedData mScannedData;
+    private String mParticipantUrl;
     public ZBarScannerView mScannerView;
 
     public BadgeScannerFragment() {
@@ -87,14 +91,12 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
 
     @Override
     public void handleResult(Result result) {
-        ScannedData scannedData;
-        GsonBuilder gsonBuilder = new GsonBuilder();
         try {
-            scannedData = ScannedData.parse(result.getContents());
-            String participantUrl = "https://rootconf.talkfunnel.com/2015/participant" +
-                    "?key=" + scannedData.getKey() +
-                    "&puk=" + scannedData.getPuk();
-            new ContactFetcher(getActivity(), this).fetch(participantUrl);
+            mScannedData = ScannedData.parse(result.getContents());
+            mParticipantUrl = "https://rootconf.talkfunnel.com/2015/participant" +
+                    "?key=" + mScannedData.getKey() +
+                    "&puk=" + mScannedData.getPuk();
+            new ContactFetcher(getActivity(), this).fetch(mParticipantUrl);
         } catch (ScannedData.UnknownBadgeException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "Unknown badge!", Toast.LENGTH_LONG).show();
@@ -111,7 +113,10 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
 
     @Override
     public void onContactFetchFailure() {
-
+        if(ContactQueue.find(ContactQueue.class, "user_puk = ? and user_key = ?", mScannedData.getPuk(), mScannedData.getKey()).isEmpty()){
+            ContactQueue contactQueue = new ContactQueue(mScannedData.getPuk(), mScannedData.getKey(), TalkFunnelActivity.SPACE_ID, mParticipantUrl);
+            contactQueue.save();
+        }
     }
 
     public interface onContactFetchListener {

@@ -63,6 +63,5 @@ public class ContactFetcher {
             }
         }, mContext);
         mRequestQueue.add(customJsonObjectRequest);
-
     }
 }
