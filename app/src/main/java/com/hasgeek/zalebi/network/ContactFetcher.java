@@ -28,10 +28,6 @@ public class ContactFetcher {
         public void onContactFetchFailure();
     }
 
-    public ContactFetcher(Context context) {
-        mContext = context;
-    }
-
     public ContactFetcher(Context context, ContactFetchListener contactFetchListener) {
         mContext = context;
         mContactFetchListener = contactFetchListener;
