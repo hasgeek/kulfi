@@ -27,8 +27,10 @@ import com.hasgeek.zalebi.fragment.BadgeScannerFragment;
 import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
+import com.hasgeek.zalebi.model.Space;
 import com.hasgeek.zalebi.network.AttendeeListFetcher;
 import com.hasgeek.zalebi.network.AuthHelper;
+import com.hasgeek.zalebi.sync.SyncProvider;
 import com.hasgeek.zalebi.util.Config;
 
 import java.util.ArrayList;
@@ -68,9 +70,16 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
             setupViewPager(mViewPager);
         }
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal),
+                getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(mViewPager);
-        new AttendeeListFetcher(this).syncAttendees();
+        if(Space.count(Space.class,"",new String[]{}) == 0){
+            Log.d("hasgeek","need to fetch data as no data exists");
+            new SyncProvider().sync(this);
+        }
+        else{
+            Log.d("hasgeek","no need to sync, as some data exists");
+        }
     }
 
     @Override
