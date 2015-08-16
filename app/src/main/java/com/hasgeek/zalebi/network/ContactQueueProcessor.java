@@ -15,22 +15,21 @@ public class ContactQueueProcessor implements ContactFetcher.ContactFetchListene
     Context mContext;
     ContactFetcher mContactFetcher;
 
-    public ContactQueueProcessor(Context mContext) {
-        this.mContext = mContext;
+    public ContactQueueProcessor(Context context) {
+        this.mContext = context;
         mContactFetcher = new ContactFetcher(mContext, this);
     }
 
     public void process() {
         List<ContactQueue> contactQueues = ContactQueue.listAll(ContactQueue.class);
         for (ContactQueue contactQueue : contactQueues) {
-            Log.e("funnel", "fetching for " + contactQueue.getParticipantUrl());
             mContactFetcher.fetch(contactQueue.getParticipantUrl());
         }
     }
 
     @Override
     public void onContactFetchSuccess(Contact contact) {
-        List<ContactQueue> contactQueues = ContactQueue.find(ContactQueue.class, "user_id", contact.getUserId());
+        List<ContactQueue> contactQueues = ContactQueue.find(ContactQueue.class, "user_id = ?", contact.getUserId());
         for (ContactQueue contactQueue : contactQueues) {
             contactQueue.delete();
         }

@@ -143,8 +143,8 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
 
     @Override
     public void onContactFetchFailure() {
-        if(ContactQueue.find(ContactQueue.class, "user_puk = ? and user_key = ?", mScannedData.getPuk(), mScannedData.getKey()).isEmpty()){
-            ContactQueue contactQueue = new ContactQueue(mScannedData.getPuk(), mScannedData.getKey(), TalkFunnelActivity.SPACE_ID, mParticipantUrl);
+        if (ContactQueue.find(ContactQueue.class, "user_puk = ? and user_key = ?", mScannedData.getPuk(), mScannedData.getKey()).isEmpty()) {
+            ContactQueue contactQueue = new ContactQueue(mScannedData.getPuk(), mScannedData.getKey(), mAttendee.getUserId(), TalkFunnelActivity.SPACE_ID, mParticipantUrl);
             contactQueue.save();
         }
     }

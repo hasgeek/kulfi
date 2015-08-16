@@ -6,21 +6,29 @@ import com.orm.SugarRecord;
  * Created by heisenberg on 16/08/15.
  */
 public class ContactQueue extends SugarRecord<ContactQueue>{
-
+    private String userId;
     private String userPuk;
     private String userKey;
     private String spaceId;
     private String participantUrl;
 
-    public ContactQueue(String userPuk, String userKey, String spaceId, String participantUrl) {
+    public ContactQueue(String userPuk, String userKey, String userId, String spaceId, String participantUrl) {
         this.userPuk = userPuk;
         this.userKey = userKey;
+        this.userId = userId;
         this.spaceId = spaceId;
         this.participantUrl = participantUrl;
     }
 
     public ContactQueue() {
-        this.userPuk = userPuk;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserPuk() {
