@@ -31,10 +31,20 @@ public class ContactFragment extends Fragment {
         mRecyclerView = (RecyclerView) mRecyclerView.findViewById(R.id.contact_list);
         //recyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+        return mRecyclerView;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         List<Contact> contacts = Contact.listAll(Contact.class);
         mContactListAdapter = new ContactListAdapter(contacts);
         mRecyclerView.setAdapter(mContactListAdapter);
-        return mRecyclerView;
     }
 
     private void bindScanBadgeFab() {
