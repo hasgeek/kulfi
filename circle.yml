@@ -4,7 +4,7 @@ machine:
 dependencies:
   pre:
     - echo y | android update sdk --no-ui --all --filter "com.android.support:recyclerview-v7:22.2.1"
-    - echo y | android update sdk --no-ui --all --filter "com.android.support:design:22.2.1"
+    - echo y | android update sdk --no-ui --all --filter "com.android.support:design"
 test:
   override:
     - ./gradlew clean test
