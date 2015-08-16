@@ -10,16 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.adapter.ContactListAdapter;
 import com.hasgeek.zalebi.model.Contact;
+import com.hasgeek.zalebi.network.AuthHelper;
 
 import java.util.List;
 
 public class ContactFragment extends Fragment {
     RecyclerView mRecyclerView;
     ContactListAdapter mContactListAdapter;
+
     public ContactFragment() {
     }
 
@@ -52,14 +55,18 @@ public class ContactFragment extends Fragment {
         scanBadgeFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                BadgeScannerFragment badgeScannerFragment = new BadgeScannerFragment();
-                badgeScannerFragment.show(fragmentManager, "scan");
+                if (new AuthHelper(getActivity()).isLoggedIn()) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    BadgeScannerFragment badgeScannerFragment = new BadgeScannerFragment();
+                    badgeScannerFragment.show(fragmentManager, "scan");
+                }else{
+                    Toast.makeText(getActivity(), "Please log in to scan the badge", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
-    public void updateContactList(){
+    public void updateContactList() {
         List<Contact> contacts = Contact.listAll(Contact.class);
         mContactListAdapter.updateContactList(contacts);
     }
