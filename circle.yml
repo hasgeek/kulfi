@@ -1,0 +1,16 @@
+machine:
+  environment:
+    ANDROID_HOME: /usr/local/android-sdk-linux
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "com.android.support:recyclerview-v7:22.2.1"
+    - echo y | android update sdk --no-ui --all --filter "com.android.support:design:22.2.1"
+test:
+  override:
+    - ./gradlew clean test
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - cp app/build/test-results/*.xml $CIRCLE_TEST_REPORTS/junit/
+general:
+  artifacts:
+    - "app/build/outputs/apk"
