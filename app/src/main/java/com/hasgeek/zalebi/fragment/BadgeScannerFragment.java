@@ -130,7 +130,7 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.add_attendee, null);
         TextView attendeeName = (TextView) view.findViewById(R.id.attendee_name);
-        TextView attendeeCompany = (TextView) view.findViewById(R.id.attendee_company);
+        TextView attendeeCompany = (TextView) view.findViewById(R.id.attendee_organization);
         attendeeName.setText(attendee.getFullname());
         attendeeCompany.setText(attendee.getCompany());
         return view;

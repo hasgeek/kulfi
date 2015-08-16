@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.model.Contact;
@@ -43,6 +44,12 @@ public class ContactDetailDialogFragment extends DialogFragment {
     private View buildView() {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.contact_detail, null);
+        Bundle bundle = getArguments();
+        Contact contact = bundle.getParcelable("contact");
+        ((TextView)view.findViewById(R.id.contact_name)).setText(contact.getFullname());
+        ((TextView)view.findViewById(R.id.contact_phone)).setText(contact.getPhone());
+        ((TextView)view.findViewById(R.id.contact_email)).setText(contact.getEmail());
+        ((TextView)view.findViewById(R.id.contact_organization)).setText(contact.getCompany());
         return view;
     }
 }

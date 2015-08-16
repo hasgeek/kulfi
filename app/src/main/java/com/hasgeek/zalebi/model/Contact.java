@@ -1,5 +1,8 @@
 package com.hasgeek.zalebi.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
@@ -7,7 +10,7 @@ import com.orm.SugarRecord;
 /**
  * Created by heisenberg on 24/07/15.
  */
-public class Contact extends SugarRecord<Contact> {
+public class Contact extends SugarRecord<Contact> implements Parcelable{
     @Expose
     private String company;
 
@@ -42,6 +45,9 @@ public class Contact extends SugarRecord<Contact> {
 
     public String getCompany() {
         return company;
+    }
+
+    public Contact() {
     }
 
     public void setCompany(String company) {
@@ -111,4 +117,40 @@ public class Contact extends SugarRecord<Contact> {
     public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
     }
+
+    protected Contact(Parcel in) {
+        company = in.readString();
+        fullname = in.readString();
+        jobTitle = in.readString();
+        email = in.readString();
+        phone = in.readString();
+        twitter = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(company);
+        dest.writeString(fullname);
+        dest.writeString(jobTitle);
+        dest.writeString(email);
+        dest.writeString(phone);
+        dest.writeString(twitter);
+    }
+
+    public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
 }

@@ -47,7 +47,6 @@ public class SessionListAdapter extends RecyclerView.Adapter<SessionListAdapter.
         public void onClick(View v) {
             Context context = v.getContext();
             TextView sessionTitle = (TextView) v.findViewById(R.id.session_title);
-            Log.e("funnel", "click..." + sessionTitle.getText());
 
             Bundle bundle = new Bundle();
             bundle.putParcelable("session", mSession);

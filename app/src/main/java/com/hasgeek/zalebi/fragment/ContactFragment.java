@@ -43,7 +43,7 @@ public class ContactFragment extends Fragment {
     public void onResume() {
         super.onResume();
         List<Contact> contacts = Contact.listAll(Contact.class);
-        mContactListAdapter = new ContactListAdapter(contacts);
+        mContactListAdapter = new ContactListAdapter(contacts, getActivity());
         mRecyclerView.setAdapter(mContactListAdapter);
     }
 
