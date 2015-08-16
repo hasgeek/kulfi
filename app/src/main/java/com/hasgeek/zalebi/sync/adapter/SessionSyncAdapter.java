@@ -8,7 +8,9 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.hasgeek.zalebi.network.AttendeeListFetcher;
 import com.hasgeek.zalebi.network.SessionFetcher;
+import com.hasgeek.zalebi.network.SpaceFetcher;
 
 public class SessionSyncAdapter extends AbstractThreadedSyncAdapter {
     public SessionSyncAdapter(Context context, boolean autoInitialize) {
@@ -22,6 +24,20 @@ public class SessionSyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
 
         Log.d("hasgeek","Sync adapter onPerformSync");
-        new SessionFetcher(getContext()).fetch();
+        syncSpaces();
+        syncSessions();
+        syncAttendees();
+    }
+
+    private void syncAttendees() {
+        new AttendeeListFetcher(getContext()).syncAttendees();
+    }
+
+    private void syncSessions() {
+        new SessionFetcher(getContext()).syncSessions();
+    }
+
+    private void syncSpaces(){
+        new SpaceFetcher(getContext()).fetch();
     }
 }

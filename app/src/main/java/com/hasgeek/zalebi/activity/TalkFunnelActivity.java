@@ -70,7 +70,7 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal), getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(mViewPager);
-        new AttendeeListFetcher(this).fetch();
+        new AttendeeListFetcher(this).syncAttendees();
     }
 
     @Override

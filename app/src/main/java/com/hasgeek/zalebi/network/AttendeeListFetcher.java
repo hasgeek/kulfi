@@ -11,6 +11,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hasgeek.zalebi.model.Attendee;
+import com.hasgeek.zalebi.model.Space;
+import com.hasgeek.zalebi.util.Config;
 
 import org.json.JSONObject;
 
@@ -30,9 +32,9 @@ public class AttendeeListFetcher {
         requestQueue = Volley.newRequestQueue(mContext);
     }
 
-    public void fetch() {
+    public void fetch(String url) {
         CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.GET,
-                "https://rootconf.talkfunnel.com/2015/participants/json", null, new Response.Listener<JSONObject>() {
+                url , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(final JSONObject response) {
                 new ScheduledThreadPoolExecutor(1).execute(new Runnable() {
@@ -64,5 +66,16 @@ public class AttendeeListFetcher {
             }
         }, mContext);
         requestQueue.add(customJsonObjectRequest);
+    }
+
+    public void syncAttendees() {
+        List<Space> spaces = Space.listAll(Space.class);
+        for(Space space : spaces){
+            String partcipantURL = space.getUrl()+ Config.PARTICPANTS_PATH;
+            Log.d("hasgeek", "Syncing attendees for space " + space.getTitle()
+                    +" with URL "+partcipantURL);
+            fetch(partcipantURL);
+        }
+
     }
 }

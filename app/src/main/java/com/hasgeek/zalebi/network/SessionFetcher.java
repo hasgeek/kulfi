@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hasgeek.zalebi.model.Session;
+import com.hasgeek.zalebi.model.Space;
 import com.hasgeek.zalebi.util.Config;
 
 import org.json.JSONArray;
@@ -31,9 +32,18 @@ public class SessionFetcher {
         requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void fetch(){
+    public void syncSessions(){
+        List<Space> spaces = Space.listAll(Space.class);
+        for(Space space : spaces){
+            Log.d("hasgeek","Syncing sessions for space "+space.getTitle());
+            fetch(space.getJsonURL());
+        }
+    }
+
+    public void fetch(String url){
+        Log.d("hasgeek","fetching sessions for url "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                Config.CONF_URL, new Response.Listener<JSONObject>() {
+                url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject json) {
                 try {
