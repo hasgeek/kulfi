@@ -1,9 +1,7 @@
 package com.hasgeek.zalebi.adapter;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.fragment.ContactDetailDialogFragment;
 import com.hasgeek.zalebi.model.Contact;
+import com.hasgeek.zalebi.util.MD5Util;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by heisenberg on 24/07/15.
@@ -34,6 +36,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         TextView personName;
         TextView personDesc;
         View containerView;
+        CircleImageView profileImage;
 
         public ContactViewHolder(View view) {
             super(view);
@@ -41,6 +44,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             confName = (TextView) view.findViewById(R.id.conf_name);
             personName = (TextView) view.findViewById(R.id.person_name);
             personDesc = (TextView) view.findViewById(R.id.person_desc);
+            profileImage = (CircleImageView) view.findViewById(R.id.profile_image);
         }
 
         @Override
@@ -63,6 +67,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         final Contact contact = mContacts.get(position);
         holder.personName.setText(contact.getFullname());
         holder.personDesc.setText(constructPersonDescription(contact));
+        Glide.with(mParentActivity).load("http://www.gravatar.com/avatar/" + MD5Util.md5Hex(contact.getEmail())).into(holder.profileImage);
         holder.getContainerView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

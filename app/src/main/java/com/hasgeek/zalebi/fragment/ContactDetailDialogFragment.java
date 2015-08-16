@@ -22,6 +22,7 @@ import com.hasgeek.zalebi.model.Contact;
 public class ContactDetailDialogFragment extends DialogFragment {
 
     private onContactDeleteListener mContactDeleteListener;
+    private Contact mContact;
 
     public interface onContactDeleteListener{
         public void onContactDelete();
@@ -30,19 +31,19 @@ public class ContactDetailDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mContact = getArguments().getParcelable("contact");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Contact contact = getArguments().getParcelable("contact");
                 Intent intent = new Intent(Intent.ACTION_INSERT);
                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
 
-                intent.putExtra(ContactsContract.Intents.Insert.NAME, contact.getFullname());
-                intent.putExtra(ContactsContract.Intents.Insert.PHONE, contact.getPhone());
-                intent.putExtra(ContactsContract.Intents.Insert.COMPANY, contact.getCompany());
-                intent.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail());
-                intent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, contact.getJobTitle());
+                intent.putExtra(ContactsContract.Intents.Insert.NAME, mContact.getFullname());
+                intent.putExtra(ContactsContract.Intents.Insert.PHONE, mContact.getPhone());
+                intent.putExtra(ContactsContract.Intents.Insert.COMPANY, mContact.getCompany());
+                intent.putExtra(ContactsContract.Intents.Insert.EMAIL, mContact.getEmail());
+                intent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, mContact.getJobTitle());
                 startActivity(intent);
             }
         }).setNegativeButton("Delete", new DialogInterface.OnClickListener() {
@@ -89,11 +90,10 @@ public class ContactDetailDialogFragment extends DialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.contact_detail, null);
         Bundle bundle = getArguments();
-        Contact contact = bundle.getParcelable("contact");
-        ((TextView)view.findViewById(R.id.contact_name)).setText(contact.getFullname());
-        ((TextView)view.findViewById(R.id.contact_phone)).setText(contact.getPhone());
-        ((TextView)view.findViewById(R.id.contact_email)).setText(contact.getEmail());
-        ((TextView)view.findViewById(R.id.contact_organization)).setText(contact.getCompany());
+        ((TextView)view.findViewById(R.id.contact_name)).setText(mContact.getFullname());
+        ((TextView)view.findViewById(R.id.contact_phone)).setText(mContact.getPhone());
+        ((TextView)view.findViewById(R.id.contact_email)).setText(mContact.getEmail());
+        ((TextView)view.findViewById(R.id.contact_organization)).setText(mContact.getCompany());
         return view;
     }
 }
