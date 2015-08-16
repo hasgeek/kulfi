@@ -12,7 +12,7 @@
         android:textColor="@android:color/black"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         />
 
     <TextView
@@ -28,7 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/attendee_name"
-        android:layout_marginBottom="4dp"
+        android:textColor="@color/grey_700"
+        android:layout_marginBottom="6dp"
         />
 
     <TextView
@@ -43,6 +44,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/grey_700"
         android:id="@+id/attendee_company"
         />
 

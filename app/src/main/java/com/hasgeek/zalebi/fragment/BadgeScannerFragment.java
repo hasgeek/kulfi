@@ -11,13 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.activity.TalkFunnelActivity;
 import com.hasgeek.zalebi.model.Attendee;
@@ -25,13 +20,8 @@ import com.hasgeek.zalebi.model.Contact;
 import com.hasgeek.zalebi.model.ContactQueue;
 import com.hasgeek.zalebi.model.ScannedData;
 import com.hasgeek.zalebi.network.ContactFetcher;
-import com.hasgeek.zalebi.network.CustomJsonObjectRequest;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -42,6 +32,7 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
     private RequestQueue mRequestQueue;
     private ScannedData mScannedData;
     private String mParticipantUrl;
+    private Attendee mAttendee;
     public ZBarScannerView mScannerView;
 
     public BadgeScannerFragment() {
@@ -101,17 +92,17 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
         mScannerView.stopCamera();
         dismiss();
         try {
-            //Only for testing, in future the space_id will be fetched from a global space context
+            //Only for testing; in future the space_id will be fetched from a global space context
             String ROOT_CONF_SPACE_ID = "54";
             mScannedData = ScannedData.parse(result.getContents());
             mParticipantUrl = "https://rootconf.talkfunnel.com/2015/participant" +
                     "?key=" + mScannedData.getKey() +
                     "&puk=" + mScannedData.getPuk();
             List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ? and space_id = ?", mScannedData.getPuk(), ROOT_CONF_SPACE_ID);
-            if(!attendees.isEmpty()){
-                Attendee attendee = attendees.get(0);
+            if (!attendees.isEmpty()) {
+                mAttendee = attendees.get(0);
                 new AlertDialog.Builder(getActivity())
-                        .setView(buildView(attendee))
+                        .setView(buildView(mAttendee))
                         .setCancelable(false)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
@@ -126,7 +117,7 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
                             }
                         }).create().show();
 
-            }else{
+            } else {
                 Toast.makeText(getActivity(), "Attendee not found!", Toast.LENGTH_LONG).show();
             }
         } catch (ScannedData.UnknownBadgeException e) {
