@@ -1,0 +1,23 @@
+machine:
+  environment:
+    ANDROID_HOME: /usr/local/android-sdk-linux
+dependencies:
+  override:
+    - echo y | android update sdk --no-ui --filter "android-22"
+    - echo y | android update sdk --no-ui --filter "android-18"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-22.0.1"
+test:
+  override:
+    - ./gradlew clean test
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - cp app/build/test-results/*.xml $CIRCLE_TEST_REPORTS/junit/
+deployment:
+  production:
+    branch: master
+    commands:
+      - cp app/build/test-results/*.xml $CIRCLE_TEST_REPORTS/junit/
+      - ./gradlew build -x test
+general:
+  artifacts:
+    - "app/build/outputs/apk"
