@@ -2,7 +2,9 @@ package com.hasgeek.zalebi.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +27,16 @@ public class ContactDetailDialogFragment extends DialogFragment {
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Contact contact = getArguments().getParcelable("contact");
+                Intent intent = new Intent(Intent.ACTION_INSERT);
+                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
 
+                intent.putExtra(ContactsContract.Intents.Insert.NAME, contact.getFullname());
+                intent.putExtra(ContactsContract.Intents.Insert.PHONE, contact.getPhone());
+                intent.putExtra(ContactsContract.Intents.Insert.COMPANY, contact.getCompany());
+                intent.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail());
+                intent.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, contact.getJobTitle());
+                startActivity(intent);
             }
         }).setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             @Override
