@@ -4,9 +4,9 @@ machine:
 dependencies:
   pre:
     - echo y | android update sdk --no-ui --filter "android-22"
-    - echo y | android update sdk --no-ui --filter "android-18"
+    - echo y | android update sdk --no-ui --filter "android-16"
     - echo y | android update sdk --no-ui --all --filter "build-tools-22.0.1"
-    - echo y | android update sdk --no-ui --all --filter "extra-android-support"
+    - echo y | android update sdk --no-ui --all --filter "extra-android-support,tools,platform-tools,extra-google-m2repository,extra-google-google_play_services"
 test:
   override:
     - ./gradlew clean test
