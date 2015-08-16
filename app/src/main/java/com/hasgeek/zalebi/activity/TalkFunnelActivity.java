@@ -25,6 +25,7 @@ import com.hasgeek.zalebi.BuildConfig;
 import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.fragment.BadgeScannerFragment;
 import com.hasgeek.zalebi.fragment.ChatFragment;
+import com.hasgeek.zalebi.fragment.ContactDetailDialogFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
 import com.hasgeek.zalebi.network.AttendeeListFetcher;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TalkFunnelActivity extends AppCompatActivity implements BadgeScannerFragment.onContactFetchListener {
+public class TalkFunnelActivity extends AppCompatActivity implements BadgeScannerFragment.onContactFetchListener, ContactDetailDialogFragment.onContactDeleteListener {
 
     // Get rid of these once we have support for multiple conferences
     public static final String SPACE_ID = "55";
@@ -178,6 +179,15 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
 
     @Override
     public void onContactFetchComplete() {
+        updateContactFragment();
+    }
+
+    @Override
+    public void onContactDelete() {
+        updateContactFragment();
+    }
+
+    private void updateContactFragment() {
         try {
             int currentItem = mViewPager.getCurrentItem();
             Adapter adapter = (Adapter) mViewPager.getAdapter();

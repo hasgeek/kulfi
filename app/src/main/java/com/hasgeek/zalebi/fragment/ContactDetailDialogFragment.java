@@ -1,5 +1,6 @@
 package com.hasgeek.zalebi.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,12 @@ import com.hasgeek.zalebi.model.Contact;
  * Created by heisenberg on 16/08/15.
  */
 public class ContactDetailDialogFragment extends DialogFragment {
+
+    private onContactDeleteListener mContactDeleteListener;
+
+    public interface onContactDeleteListener{
+        public void onContactDelete();
+    }
 
     @NonNull
     @Override
@@ -41,6 +48,20 @@ public class ContactDetailDialogFragment extends DialogFragment {
         }).setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Confirm")
+                        .setMessage("Are you sure you want to delete this contact?")
+                        .setPositiveButton("Yes, Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Contact contact = getArguments().getParcelable("contact");
+                                contact.delete();
+                                mContactDeleteListener.onContactDelete();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .create()
+                        .show();
 
             }
         }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -50,6 +71,18 @@ public class ContactDetailDialogFragment extends DialogFragment {
             }
         }).setCancelable(true).setView(buildView());
         return builder.create();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mContactDeleteListener = (onContactDeleteListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement onContactFetchListener");
+        }
+
     }
 
     private View buildView() {
