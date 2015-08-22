@@ -1,4 +1,4 @@
-package com.orm;
+package com.hasgeek.zalebi.app;
 
 import android.app.Application;
 import android.util.Log;
@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = com.hasgeek.zalebi.BuildConfig.class, sdk = 21, manifest = "src/main/AndroidManifest.xml")
-public class TestSugarApp extends Application
+public class TestTalkfunnelApplication extends Application
         implements TestLifecycleApplication {
 
     @Test
