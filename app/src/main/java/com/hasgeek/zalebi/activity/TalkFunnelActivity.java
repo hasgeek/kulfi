@@ -74,13 +74,6 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
         tabLayout.setTabTextColors(getResources().getColor(R.color.tab_normal),
                 getResources().getColor(R.color.tab_selected));
         tabLayout.setupWithViewPager(mViewPager);
-        if(Space.count(Space.class,"",new String[]{}) == 0){
-            Log.d("hasgeek","need to fetch data as no data exists");
-            new SyncProvider().sync(this);
-        }
-        else{
-            Log.d("hasgeek","no need to sync, as some data exists");
-        }
     }
 
     @Override
