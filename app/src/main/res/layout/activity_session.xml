@@ -61,8 +61,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:orientation="vertical"
             android:paddingTop="24dp">
 
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:text="10:00 AM - 11:30 AM"
                         android:textColor="@android:color/primary_text_light"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -125,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:textAllCaps="true"
                         android:textColor="@android:color/primary_text_light"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -149,7 +149,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/primary_text_light"
-                        android:textSize="16dp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
