@@ -22,7 +22,7 @@ deployment:
   production:
     branch: master
     commands:
-      - openssl aes-256-cbc -k $DKEY -in kulfi.enc -out kulfi.key -d
+      - openssl aes-256-cbc -k $DKEY -in kulfi.enc -out app/kulfi.key -d
       - ./gradlew build -x test
 general:
   artifacts:
