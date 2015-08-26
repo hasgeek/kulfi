@@ -3,7 +3,6 @@ package com.hasgeek.zalebi.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import com.hasgeek.zalebi.R;
 import com.hasgeek.zalebi.adapter.SessionListAdapter;
 import com.hasgeek.zalebi.model.Session;
 import com.hasgeek.zalebi.reader.SessionsReader;
-
+import com.tonicartos.superslim.LayoutManager;
 import java.util.List;
 
 public class SessionFragment extends Fragment implements SessionsReader.SessionReadListener{
@@ -34,8 +33,7 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
                              Bundle savedInstanceState) {
         mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_session, container, false);
         //mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
-
+        mRecyclerView.setLayoutManager(new LayoutManager(mRecyclerView.getContext()));
         return mRecyclerView;
     }
 
