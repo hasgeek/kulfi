@@ -24,8 +24,8 @@ public class ContactFetcher {
     ContactFetchListener mContactFetchListener;
 
     public interface ContactFetchListener{
-        public void onContactFetchSuccess(Contact contact);
-        public void onContactFetchFailure();
+        void onContactFetchSuccess(Contact contact);
+        void onContactFetchFailure();
     }
 
     public ContactFetcher(Context context, ContactFetchListener contactFetchListener) {

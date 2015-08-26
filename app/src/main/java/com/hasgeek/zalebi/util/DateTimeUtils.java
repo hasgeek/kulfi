@@ -43,6 +43,10 @@ public class DateTimeUtils {
     }
 
     public static String displayableDate(String startTime) {
+        return displayableDate(startTime, false);
+    }
+
+    public static String displayableDate(String startTime, boolean shortMonth){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = null;
@@ -51,7 +55,13 @@ public class DateTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        SimpleDateFormat simpleDateFormat;
+        if(shortMonth){
+            simpleDateFormat = new SimpleDateFormat("dd MMM");
+        }else {
+            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        }
+
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
         return simpleDateFormat.format(date);
     }

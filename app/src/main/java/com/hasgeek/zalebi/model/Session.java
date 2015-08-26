@@ -21,6 +21,10 @@ public class Session extends SugarRecord<Session> implements Parcelable {
     private String speaker;
     private String room;
 
+    private int sectionFirstPosition;
+    private boolean isHeader;
+    private String headerText;
+
     @SerializedName("space_id")
     @Expose
     private String spaceId;
@@ -31,6 +35,11 @@ public class Session extends SugarRecord<Session> implements Parcelable {
 
     public Session(){
 
+    }
+
+    public Session(boolean isHeader, int sectionFirstPosition) {
+        this.sectionFirstPosition = sectionFirstPosition;
+        this.isHeader = isHeader;
     }
 
     public String getTitle() {
@@ -154,5 +163,29 @@ public class Session extends SugarRecord<Session> implements Parcelable {
             setId(existingSession.getId());
         }
         save();
+    }
+
+    public int getSectionFirstPosition() {
+        return sectionFirstPosition;
+    }
+
+    public void setSectionFirstPosition(int sectionFirstPosition) {
+        this.sectionFirstPosition = sectionFirstPosition;
+    }
+
+    public boolean isHeader() {
+        return isHeader;
+    }
+
+    public void setIsHeader(boolean isHeader) {
+        this.isHeader = isHeader;
+    }
+
+    public String getHeaderText() {
+        return headerText;
+    }
+
+    public void setHeaderText(String headerText) {
+        this.headerText = headerText;
     }
 }
