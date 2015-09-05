@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class SessionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setSessionDetails();
+        hideEmptyDetailTitle();
     }
 
     @Override
@@ -81,5 +83,19 @@ public class SessionActivity extends AppCompatActivity {
     private void setSessionTextView(int id, CharSequence value) {
         TextView textView = (TextView) findViewById(id);
         textView.setText(value);
+    }
+
+    private void hideEmptyDetailTitle() {
+        if(mSession.getDescription().isEmpty()) {
+            hideTextView(R.id.session_description_title);
+        }
+        if(mSession.getRoom().isEmpty()) {
+            hideTextView(R.id.session_room_title);
+        }
+    }
+
+    private void hideTextView(int id) {
+        TextView textView = (TextView) findViewById(id);
+        textView.setVisibility(View.GONE);
     }
 }
