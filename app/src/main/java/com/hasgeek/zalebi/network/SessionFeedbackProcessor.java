@@ -23,9 +23,9 @@ public class SessionFeedbackProcessor implements SessionFeedbackSubmitter.Sessio
 
     public void process() {
         List<SessionFeedback> sessionFeedbackList = SessionFeedback.find(SessionFeedback.class,"sync_status = ?", "false");
-        for(SessionFeedback sessionFeedback : sessionFeedbackList){
+        for(SessionFeedback sessionFeedback : sessionFeedbackList) {
             Log.d("hasgeek", "Syncing session feedback for space " + sessionFeedback.getSpaceId());
-           mSessionFeedbackSubmitter.submit(sessionFeedback);
+            mSessionFeedbackSubmitter.submit(sessionFeedback);
         }
     }
 
@@ -38,5 +38,6 @@ public class SessionFeedbackProcessor implements SessionFeedbackSubmitter.Sessio
     public void onSessionFeedbackSubmitSuccess(SessionFeedback sessionFeedback) {
         sessionFeedback.setSyncStatus(true);
         sessionFeedback.save();
+        Log.d("hasgeek", "Successfully synced session feedback for session id " + sessionFeedback.getSessionId());
     }
 }
