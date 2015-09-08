@@ -11,8 +11,17 @@ public class SessionFeedback extends SugarRecord<SessionFeedback> {
     Long sessionId;
     String text;
     int rating;
+    boolean syncStatus;
 
     public SessionFeedback() {
+    }
+
+    public String getSpaceId() {
+        return spaceId;
+    }
+
+    public void setSpaceId(String spaceId) {
+        this.spaceId = spaceId;
     }
 
     public Long getSessionId() {
@@ -37,5 +46,13 @@ public class SessionFeedback extends SugarRecord<SessionFeedback> {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public boolean isSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(boolean syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }
