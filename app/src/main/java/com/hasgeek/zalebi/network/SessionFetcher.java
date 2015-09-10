@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hasgeek.zalebi.model.Session;
 import com.hasgeek.zalebi.model.Space;
-import com.hasgeek.zalebi.util.Config;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,10 +68,8 @@ public class SessionFetcher {
                         session.saveOrUpdate();
                     }
                     Log.d("hasgeek", "number of sessions inserted for space ID " + sessions.size());
-//                    Log.d("hasgeek","number of sessions retrieved from DB "+Session.listAll(Session.class).size());
                 } catch (Exception e) {
                     Log.e("hasgeek","Exception raised!!!!"+e);
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {

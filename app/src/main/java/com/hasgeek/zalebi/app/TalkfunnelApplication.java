@@ -18,7 +18,7 @@ import java.io.OutputStream;
 
 public class TalkfunnelApplication  extends SugarApp{
     private String dbName = "hasgeek_sugar.db";
-    private String dbPath = "/data/data/com.hasgeek.zalebi/databases/"+dbName;
+    private String dbPath = "/data/data/com.hasgeek.funnel/databases/"+dbName;
     // The authority for the sync adapter's content provider
     private static final String AUTHORITY = "com.hasgeek.zalebi.sync.provider";
     // An account type, in the form of a domain name

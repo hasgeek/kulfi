@@ -8,9 +8,6 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.hasgeek.zalebi.network.AttendeeListFetcher;
-import com.hasgeek.zalebi.network.SessionFetcher;
-import com.hasgeek.zalebi.network.SpaceFetcher;
 import com.hasgeek.zalebi.sync.SyncProvider;
 
 public class SessionSyncAdapter extends AbstractThreadedSyncAdapter {

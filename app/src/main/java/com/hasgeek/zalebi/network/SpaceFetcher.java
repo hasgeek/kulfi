@@ -10,12 +10,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.hasgeek.zalebi.model.Session;
 import com.hasgeek.zalebi.model.Space;
 import com.hasgeek.zalebi.util.Config;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -24,11 +21,9 @@ import java.util.List;
 
 public class SpaceFetcher {
 
-    private Context context;
     private RequestQueue requestQueue;
 
     public SpaceFetcher(Context context) {
-        this.context = context;
         requestQueue = Volley.newRequestQueue(context);
     }
 
@@ -50,8 +45,7 @@ public class SpaceFetcher {
                     Log.d("hasgeek", "number of spaces read from JSON " + spaces.size());
                     Log.d("hasgeek","number of spaces inserted "+Space.listAll(Space.class).size());
                 } catch (Exception e) {
-                    Log.e("hasgeek","Exception raised!!!!"+e);
-                    e.printStackTrace();
+                    Log.e("hasgeek", "Exception raised!!!!" + e);
                 }
             }
         }, new Response.ErrorListener() {

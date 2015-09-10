@@ -28,10 +28,7 @@ import com.hasgeek.zalebi.fragment.ChatFragment;
 import com.hasgeek.zalebi.fragment.ContactDetailDialogFragment;
 import com.hasgeek.zalebi.fragment.ContactFragment;
 import com.hasgeek.zalebi.fragment.SessionFragment;
-import com.hasgeek.zalebi.model.Space;
-import com.hasgeek.zalebi.network.AttendeeListFetcher;
 import com.hasgeek.zalebi.network.AuthHelper;
-import com.hasgeek.zalebi.sync.SyncProvider;
 import com.hasgeek.zalebi.util.Config;
 
 import java.util.ArrayList;

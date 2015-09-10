@@ -19,7 +19,10 @@ import com.hasgeek.zalebi.model.Attendee;
 import com.hasgeek.zalebi.model.Contact;
 import com.hasgeek.zalebi.model.ContactQueue;
 import com.hasgeek.zalebi.model.ScannedData;
+import com.hasgeek.zalebi.model.Space;
 import com.hasgeek.zalebi.network.ContactFetcher;
+import com.hasgeek.zalebi.util.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
@@ -93,14 +96,17 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
         dismiss();
         try {
             //Only for testing; in future the space_id will be fetched from a global space context
-            String ROOT_CONF_SPACE_ID = "54";
             mScannedData = ScannedData.parse(result.getContents());
-            mParticipantUrl = "https://rootconf.talkfunnel.com/2015/participant" +
-                    "?key=" + mScannedData.getKey() +
-                    "&puk=" + mScannedData.getPuk();
-            List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ? and space_id = ?", mScannedData.getPuk(), ROOT_CONF_SPACE_ID);
+            List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ? and space_id = ?", mScannedData.getPuk(), TalkFunnelActivity.SPACE_ID);
             if (!attendees.isEmpty()) {
                 mAttendee = attendees.get(0);
+                List<Space> spaces = Space.find(Space.class,"id = ?",TalkFunnelActivity.SPACE_ID);
+                if (!spaces.isEmpty()){
+                    mParticipantUrl = spaces.get(0).getUrl()+ Config.PARTICPANTS_PATH+
+                            "?key=" + mScannedData.getKey() +
+                            "&puk=" + mScannedData.getPuk();
+                }
+
                 new AlertDialog.Builder(getActivity())
                         .setView(buildView(mAttendee))
                         .setCancelable(false)
