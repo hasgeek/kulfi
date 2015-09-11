@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hasgeek.zalebi.R;
+import com.hasgeek.zalebi.activity.TalkFunnelActivity;
 import com.hasgeek.zalebi.fragment.ContactDetailDialogFragment;
 import com.hasgeek.zalebi.model.Contact;
 import com.hasgeek.zalebi.util.MD5Util;
@@ -67,6 +68,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         final Contact contact = mContacts.get(position);
         holder.personName.setText(contact.getFullname());
         holder.personDesc.setText(constructPersonDescription(contact));
+        holder.confName.setText(TalkFunnelActivity.SPACE_NAME);
         Glide.with(mParentActivity).load("http://www.gravatar.com/avatar/" + MD5Util.md5Hex(contact.getEmail())).into(holder.profileImage);
         holder.getContainerView().setOnClickListener(new View.OnClickListener() {
             @Override

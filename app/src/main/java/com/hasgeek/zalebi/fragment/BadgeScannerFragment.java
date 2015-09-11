@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,18 +96,20 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
         mScannerView.stopCamera();
         dismiss();
         try {
-            //Only for testing; in future the space_id will be fetched from a global space context
             mScannedData = ScannedData.parse(result.getContents());
-            List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ? and space_id = ?", mScannedData.getPuk(), TalkFunnelActivity.SPACE_ID);
+            List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ?", mScannedData.getPuk());//"UObuY2Jc"
             if (!attendees.isEmpty()) {
                 mAttendee = attendees.get(0);
-                List<Space> spaces = Space.find(Space.class,"id = ?",TalkFunnelActivity.SPACE_ID);
+                List<Space> spaces = Space.find(Space.class,"space_id = ?",TalkFunnelActivity.SPACE_ID);
                 if (!spaces.isEmpty()){
-                    mParticipantUrl = spaces.get(0).getUrl()+ Config.PARTICPANTS_PATH+
+                    mParticipantUrl = spaces.get(0).getUrl()+ "participant"+
                             "?key=" + mScannedData.getKey() +
                             "&puk=" + mScannedData.getPuk();
+//                    mParticipantUrl = "https://rootconf.talkfunnel.com/2015/participant"+
+//                            "?key=" + mScannedData.getKey() +
+//                            "&puk=" + mScannedData.getPuk();
                 }
-
+                Log.d("hasgeek","participation URL"+mParticipantUrl);
                 new AlertDialog.Builder(getActivity())
                         .setView(buildView(mAttendee))
                         .setCancelable(false)

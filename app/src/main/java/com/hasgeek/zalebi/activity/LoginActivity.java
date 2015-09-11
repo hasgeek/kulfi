@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.hasgeek.zalebi.R;
+import com.hasgeek.zalebi.network.AttendeeListFetcher;
 import com.hasgeek.zalebi.network.AuthHelper;
 import com.hasgeek.zalebi.network.CustomJsonObjectRequest;
 
@@ -33,15 +35,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         AuthHelper authHelper = new AuthHelper(this);
-        final TextView loadingView = (TextView) findViewById(R.id.logging_in);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         Uri data = getIntent().getData();
         Uri uri = Uri.parse("http://hasgeek.com/?" + data.getFragment());
         final String access_token = uri.getQueryParameter("access_token");
-        String token_type = uri.getQueryParameter("token_type");
-
         authHelper.saveAccessToken(access_token);
-
+        Log.d("hasgeek", "logged in successfully");
+        new AttendeeListFetcher(LoginActivity.this).syncAttendees();
         CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(Request.Method.GET,
                 "https://talkfunnel.com/api/whoami",
                 null,
