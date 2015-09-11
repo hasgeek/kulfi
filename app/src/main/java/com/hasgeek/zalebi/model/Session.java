@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -21,8 +22,11 @@ public class Session extends SugarRecord<Session> implements Parcelable {
     private String speaker;
     private String room;
 
+    @Ignore
     private int sectionFirstPosition;
+    @Ignore
     private boolean isHeader;
+    @Ignore
     private String headerText;
 
     @SerializedName("space_id")
