@@ -72,6 +72,7 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void setSessionDetails() {
+        setSessionTextView(R.id.session_speaker, mSession.getSpeaker());
         setSessionTextView(R.id.session_title, mSession.getTitle());
         setSessionTextView(R.id.session_day, DateTimeUtils.displayableDate(mSession.getStart()));
         setSessionTextView(R.id.session_time_interval,
@@ -86,6 +87,9 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void hideEmptyDetailTitle() {
+        if(mSession.getSpeaker().isEmpty()) {
+            hideTextView(R.id.session_speaker_title);
+        }
         if(mSession.getDescription().isEmpty()) {
             hideTextView(R.id.session_description_title);
         }
