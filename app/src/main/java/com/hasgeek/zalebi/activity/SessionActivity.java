@@ -77,7 +77,7 @@ public class SessionActivity extends AppCompatActivity {
         setSessionTextView(R.id.session_day, DateTimeUtils.displayableDate(mSession.getStart()));
         setSessionTextView(R.id.session_time_interval,
                 DateTimeUtils.displayableTimeInterval(mSession.getStart(), mSession.getEnd()));
-        setSessionTextView(R.id.session_room, mSession.getRoom());
+        setSessionTextView(R.id.session_room, mSession.getRoom().replaceAll("[^\\w]", " ").toUpperCase());
         setSessionTextView(R.id.session_description, Html.fromHtml(mSession.getDescription()));
     }
 
