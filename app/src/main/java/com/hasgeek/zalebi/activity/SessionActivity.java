@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -88,18 +89,18 @@ public class SessionActivity extends AppCompatActivity {
 
     private void hideEmptyDetailTitle() {
         if(mSession.getSpeaker().isEmpty()) {
-            hideTextView(R.id.session_speaker_title);
+            hideTextViewContainer(R.id.session_speaker_container);
         }
         if(mSession.getDescription().isEmpty()) {
-            hideTextView(R.id.session_description_title);
+            hideTextViewContainer(R.id.session_description_container);
         }
         if(mSession.getRoom().isEmpty()) {
-            hideTextView(R.id.session_room_title);
+            hideTextViewContainer(R.id.session_room_container);
         }
     }
 
-    private void hideTextView(int id) {
-        TextView textView = (TextView) findViewById(id);
-        textView.setVisibility(View.GONE);
+    private void hideTextViewContainer(int id) {
+        LinearLayout linearLayout = (LinearLayout) findViewById(id);
+        linearLayout.setVisibility(View.GONE);
     }
 }
