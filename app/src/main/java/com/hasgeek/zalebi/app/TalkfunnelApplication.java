@@ -51,20 +51,15 @@ public class TalkfunnelApplication  extends SugarApp{
                 AUTHORITY,
                 Bundle.EMPTY,
                 SYNC_INTERVAL);
-        Log.d("hasgeek", "initiated periodic sync for SyncAdapter");
-
     }
 
     private void initDB() {
         try {
             if (!doesDatabaseExist(this, dbName)) {
-                Log.d("hasgeek", "DB not found !!!!");
                 Context context = getApplicationContext();
                 SQLiteDatabase db = context.openOrCreateDatabase(dbName, context.MODE_PRIVATE, null);
                 db.close();
-                Log.d("hasgeek","Closed db after openOrCreateDB method");
                 InputStream dbInput = getApplicationContext().getAssets().open(dbName);
-                Log.d("hasgeek","found DB from assets folder ");
                 OutputStream dbOutput = new FileOutputStream(dbPath);
                 try {
                     byte[] buffer = new byte[1024];
@@ -72,7 +67,6 @@ public class TalkfunnelApplication  extends SugarApp{
                     while ((length = dbInput.read(buffer)) > 0) {
                         dbOutput.write(buffer, 0, length);
                     }
-                    Log.d("hasgeek","Copied initial data to the actual DB");
                 }
                 finally {
                     dbOutput.flush();
@@ -81,7 +75,6 @@ public class TalkfunnelApplication  extends SugarApp{
                 }
             }
             else{
-                Log.d("hasgeek", "DB Exists, so continue ******");
             }
         } catch (Exception e) {
             Log.w("hasgeek","Exception while copying the DB from assets "+e.getMessage());

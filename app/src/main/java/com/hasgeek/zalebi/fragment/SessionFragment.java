@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,6 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("hasgeek","inside onStart of Session Fragment");
         new SessionsReader(getActivity().getApplicationContext(),this).readSessions();
     }
 

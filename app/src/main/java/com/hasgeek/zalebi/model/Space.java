@@ -82,7 +82,6 @@ public class Space extends SugarRecord<Space> {
         setId(null);
         List<Space> existingSpaces = Space.find(Space.class, "space_id = ?", ""+spaceId);
         if (existingSpaces.size() > 0){
-            Log.d("hasgeek", "Space data exists, so updating");
             Space existingSpace = existingSpaces.get(0);
             setId(existingSpace.getId());
         }

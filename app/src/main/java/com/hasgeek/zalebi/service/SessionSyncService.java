@@ -17,7 +17,6 @@ public class SessionSyncService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("hasgeek","inside SessionSync Service");
         synchronized (sSyncAdapterLock) {
             if (syncAdapter == null)
                 syncAdapter = new SessionSyncAdapter(getApplicationContext(), true);

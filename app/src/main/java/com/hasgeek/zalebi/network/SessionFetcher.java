@@ -34,13 +34,11 @@ public class SessionFetcher {
     public void syncSessions(){
         List<Space> spaces = Space.listAll(Space.class);
         for(Space space : spaces){
-            Log.d("hasgeek","Syncing sessions for space "+space.getTitle());
             fetch(space.getJsonURL());
         }
     }
 
     public void fetch(String url){
-        Log.d("hasgeek","fetching sessions for url "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
             @Override
@@ -48,7 +46,6 @@ public class SessionFetcher {
                 try {
                     JSONArray schedules = json.getJSONArray("schedule");
                     String spaceId = json.getJSONObject("space").getString("id");
-                    Log.d("hasgeek", "spaceId " + spaceId);
 
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
@@ -67,7 +64,6 @@ public class SessionFetcher {
                         session.setSpaceId(spaceId);
                         session.saveOrUpdate();
                     }
-                    Log.d("hasgeek", "number of sessions inserted for space ID " + sessions.size());
                 } catch (Exception e) {
                     Log.e("hasgeek","Exception raised!!!!"+e);
                 }

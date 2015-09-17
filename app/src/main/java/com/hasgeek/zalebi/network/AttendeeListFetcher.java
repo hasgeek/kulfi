@@ -72,8 +72,6 @@ public class AttendeeListFetcher {
         List<Space> spaces = Space.listAll(Space.class);
         for(Space space : spaces){
             String partcipantURL = space.getUrl()+ Config.PARTICPANTS_PATH;
-            Log.d("hasgeek", "Syncing attendees for space " + space.getTitle()
-                    +" with URL "+partcipantURL);
             fetch(partcipantURL);
         }
 
