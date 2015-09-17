@@ -153,4 +153,8 @@ public class Contact extends SugarRecord<Contact> implements Parcelable{
             return new Contact[size];
         }
     };
+
+    public boolean isIncomplete(){
+        return this.email == null || this.email.isEmpty();
+    }
 }

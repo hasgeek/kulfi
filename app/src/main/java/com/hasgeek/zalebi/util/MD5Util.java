@@ -17,6 +17,7 @@ public class MD5Util {
         return sb.toString();
     }
     public static String md5Hex (String message) {
+        message = (message == null)? "" : message;
         try {
             MessageDigest md =
                     MessageDigest.getInstance("MD5");

@@ -7,6 +7,6 @@
     <string name="login">LOGIN</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_session">SessionActivity</string>
-    <string name="cheese_ipsum">I love cheese, especially mascarpone dolcelatte. Feta bavarian bergkase edam mascarpone pecorino fondue cheese triangles airedale. Parmesan cow cut the cheese gouda cheese and wine parmesan dolcelatte taleggio. Gouda st. agur blue cheese goat fromage monterey jack paneer cow halloumi. Parmesan cheese on toast roquefort.</string>
     <string name="logout">LOGOUT</string>
+    <string name="incomplete_contact_info">Check after sometime</string>
 </resources>

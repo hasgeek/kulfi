@@ -26,6 +26,7 @@ import com.hasgeek.zalebi.util.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -97,22 +98,23 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
         dismiss();
         try {
             mScannedData = ScannedData.parse(result.getContents());
-            List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ?", mScannedData.getPuk());//"UObuY2Jc"
+            List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ?", mScannedData.getPuk());
             if (!attendees.isEmpty()) {
                 mAttendee = attendees.get(0);
-                List<Space> spaces = Space.find(Space.class,"space_id = ?",TalkFunnelActivity.SPACE_ID);
-                if (!spaces.isEmpty()){
-                    mParticipantUrl = spaces.get(0).getUrl()+ "participant"+
+                List<Space> spaces = Space.find(Space.class, "space_id = ?", TalkFunnelActivity.SPACE_ID);
+                if (!spaces.isEmpty()) {
+                    mParticipantUrl = spaces.get(0).getUrl() + "participant" +
                             "?key=" + mScannedData.getKey() +
                             "&puk=" + mScannedData.getPuk();
                 }
-                Log.d("hasgeek","participation URL"+mParticipantUrl);
+                Log.d("hasgeek", "participation URL" + mParticipantUrl);
                 new AlertDialog.Builder(getActivity())
                         .setView(buildView(mAttendee))
                         .setCancelable(false)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                addIncompleteContact();
                                 new ContactFetcher(parentActivity, BadgeScannerFragment.this).fetch(mParticipantUrl);
                             }
                         })
@@ -130,6 +132,16 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
             e.printStackTrace();
             Toast.makeText(getActivity(), "Unknown badge!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void addIncompleteContact() {
+        Contact contact = new Contact();
+        contact.setUserId(mAttendee.getUserId());
+        contact.setFullname(mAttendee.getFullname());
+        contact.setJobTitle(mAttendee.getJobTitle());
+        contact.setCompany(mAttendee.getCompany());
+        contact.save();
+        mListener.onContactFetchComplete();
     }
 
     private View buildView(Attendee attendee) {
@@ -156,6 +168,6 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
     }
 
     public interface onContactFetchListener {
-        public void onContactFetchComplete();
+        void onContactFetchComplete();
     }
 }

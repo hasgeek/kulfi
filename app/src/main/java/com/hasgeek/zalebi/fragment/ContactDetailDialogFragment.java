@@ -24,7 +24,7 @@ public class ContactDetailDialogFragment extends DialogFragment {
     private onContactDeleteListener mContactDeleteListener;
     private Contact mContact;
 
-    public interface onContactDeleteListener{
+    public interface onContactDeleteListener {
         public void onContactDelete();
     }
 
@@ -33,6 +33,17 @@ public class ContactDetailDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mContact = getArguments().getParcelable("contact");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        addPrimaryActions(builder);
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).setCancelable(true).setView(buildView());
+        return builder.create();
+    }
+
+    private void addPrimaryActions(AlertDialog.Builder builder) {
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -65,13 +76,7 @@ public class ContactDetailDialogFragment extends DialogFragment {
                         .show();
 
             }
-        }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }).setCancelable(true).setView(buildView());
-        return builder.create();
+        });
     }
 
     @Override
@@ -89,11 +94,10 @@ public class ContactDetailDialogFragment extends DialogFragment {
     private View buildView() {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.contact_detail, null);
-        Bundle bundle = getArguments();
-        ((TextView)view.findViewById(R.id.contact_name)).setText(mContact.getFullname());
-        ((TextView)view.findViewById(R.id.contact_phone)).setText(mContact.getPhone());
-        ((TextView)view.findViewById(R.id.contact_email)).setText(mContact.getEmail());
-        ((TextView)view.findViewById(R.id.contact_organization)).setText(mContact.getCompany());
+        ((TextView) view.findViewById(R.id.contact_name)).setText(mContact.getFullname());
+        ((TextView) view.findViewById(R.id.contact_phone)).setText(mContact.getPhone());
+        ((TextView) view.findViewById(R.id.contact_email)).setText(mContact.getEmail());
+        ((TextView) view.findViewById(R.id.contact_organization)).setText(mContact.getCompany());
         return view;
     }
 }
