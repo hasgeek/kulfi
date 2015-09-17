@@ -25,7 +25,6 @@ import com.hasgeek.zalebi.network.ContactFetcher;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -100,13 +99,13 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
             List<Attendee> attendees = Attendee.find(Attendee.class, "puk = ?", mScannedData.getPuk());
             if (!attendees.isEmpty()) {
                 mAttendee = attendees.get(0);
-                List<Space> spaces = Space.find(Space.class, "space_id = ?", TalkFunnelActivity.SPACE_ID);
-                if (!spaces.isEmpty()) {
-                    mParticipantUrl = spaces.get(0).getUrl() + "participant" +
+                List<Space> spaces = Space.find(Space.class,"space_id = ?",TalkFunnelActivity.SPACE_ID);
+                if (!spaces.isEmpty()){
+                    mParticipantUrl = spaces.get(0).getUrl()+ "participant"+
                             "?key=" + mScannedData.getKey() +
                             "&puk=" + mScannedData.getPuk();
                 }
-                Log.d("hasgeek", "participation URL" + mParticipantUrl);
+                Log.d("hasgeek","participation URL"+mParticipantUrl);
                 new AlertDialog.Builder(getActivity())
                         .setView(buildView(mAttendee))
                         .setCancelable(false)
@@ -134,13 +133,16 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
     }
 
     private void addIncompleteContact() {
-        Contact contact = new Contact();
-        contact.setUserId(mAttendee.getUserId());
-        contact.setFullname(mAttendee.getFullname());
-        contact.setJobTitle(mAttendee.getJobTitle());
-        contact.setCompany(mAttendee.getCompany());
-        contact.save();
-        mListener.onContactFetchComplete();
+        List<Contact> persistedContacts = Contact.find(Contact.class, "user_id = ?", mAttendee.getUserId());
+        if(persistedContacts.isEmpty()){
+            Contact contact = new Contact();
+            contact.setUserId(mAttendee.getUserId());
+            contact.setFullname(mAttendee.getFullname());
+            contact.setJobTitle(mAttendee.getJobTitle());
+            contact.setCompany(mAttendee.getCompany());
+            contact.save();
+            mListener.onContactFetchComplete();
+        }
     }
 
     private View buildView(Attendee attendee) {
