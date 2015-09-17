@@ -2,6 +2,7 @@
 <resources>
     <color name="grey_700">#616161</color>
     <color name="orange">#FD9727</color>
+    <color name="dark_orange">#fd8e1a</color>
     <color name="tab_normal">#74460C</color>
     <color name="tab_selected">@android:color/white</color>
     <color name="start_time">#8A000000</color>
