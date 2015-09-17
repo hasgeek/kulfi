@@ -22,7 +22,6 @@ import com.hasgeek.zalebi.model.ContactQueue;
 import com.hasgeek.zalebi.model.ScannedData;
 import com.hasgeek.zalebi.model.Space;
 import com.hasgeek.zalebi.network.ContactFetcher;
-import com.hasgeek.zalebi.util.Config;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hasgeek.zalebi.R;
@@ -74,11 +75,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             @Override
             public void onClick(View v) {
                 if (contact.isIncomplete()) {
-                    new AlertDialog.Builder(mParentActivity)
-                            .setMessage(mParentActivity.getString(R.string.incomplete_contact_info))
-                            .setPositiveButton("OK", null)
-                            .create()
-                            .show();
+                    Toast.makeText(mParentActivity, mParentActivity.getString(R.string.incomplete_contact_info), Toast.LENGTH_LONG).show();
                 } else {
                     ContactDetailDialogFragment contactDetailDialogFragment = new ContactDetailDialogFragment();
                     Bundle bundle = new Bundle();

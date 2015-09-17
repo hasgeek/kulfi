@@ -8,5 +8,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_session">SessionActivity</string>
     <string name="logout">LOGOUT</string>
-    <string name="incomplete_contact_info">Check after sometime</string>
+    <string name="incomplete_contact_info">To see more details, check back when you are online</string>
 </resources>
