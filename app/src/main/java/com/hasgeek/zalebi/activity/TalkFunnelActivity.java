@@ -112,7 +112,7 @@ public class TalkFunnelActivity extends AppCompatActivity implements BadgeScanne
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new SessionFragment(), getString(R.string.schedule));
         adapter.addFragment(new ContactFragment(), getString(R.string.contacts));
-        adapter.addFragment(new ChatFragment(), getString(R.string.chat));
+        //adapter.addFragment(new ChatFragment(), getString(R.string.chat));
         viewPager.setAdapter(adapter);
         final FloatingActionButton scanBadge = (FloatingActionButton) findViewById(R.id.scan_badge);
 
