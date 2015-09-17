@@ -105,9 +105,6 @@ public class BadgeScannerFragment extends DialogFragment implements ZBarScannerV
                     mParticipantUrl = spaces.get(0).getUrl()+ "participant"+
                             "?key=" + mScannedData.getKey() +
                             "&puk=" + mScannedData.getPuk();
-//                    mParticipantUrl = "https://rootconf.talkfunnel.com/2015/participant"+
-//                            "?key=" + mScannedData.getKey() +
-//                            "&puk=" + mScannedData.getPuk();
                 }
                 Log.d("hasgeek","participation URL"+mParticipantUrl);
                 new AlertDialog.Builder(getActivity())

@@ -19,6 +19,8 @@ import java.util.List;
 public class SessionFragment extends Fragment implements SessionsReader.SessionReadListener{
 
     RecyclerView mRecyclerView;
+    private int lastFirstVisiblePosition = 0;
+
     public SessionFragment() {
     }
 
@@ -64,4 +66,18 @@ public class SessionFragment extends Fragment implements SessionsReader.SessionR
     public void onSessionReadFailure() {
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        lastFirstVisiblePosition = ((LayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRecyclerView.getLayoutManager().scrollToPosition(lastFirstVisiblePosition);
+    }
+
+
 }
